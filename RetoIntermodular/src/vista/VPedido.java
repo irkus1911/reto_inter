@@ -8,38 +8,37 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JSpinner;
 
-public class VPedido extends JDialog {
+import modelo.ControladorClie;
 
-	/**
-	 * 
-	 */
+public class VPedido extends JDialog {
 	private static final long serialVersionUID = 1L;
+	private JComboBox comboProducto;
+	private JComboBox comboVendedor;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			VPedido dialog = new VPedido();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) {
+//		try {
+//			VPedido dialog = new VPedido();
+//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//			dialog.setVisible(true);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-	/**
-	 * Create the dialog.
-	 */
-	public VPedido() {
+
+	public VPedido(VCliente clie, boolean b, String id, ControladorClie datos) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 		
-		JComboBox comboProducto = new JComboBox();
+		comboProducto = new JComboBox();
 		comboProducto.setBounds(154, 24, 207, 44);
 		getContentPane().add(comboProducto);
 		
-		JComboBox comboVendedor = new JComboBox();
+		cargarProductos(id, datos);
+		comboVendedor = new JComboBox();
 		comboVendedor.setBounds(154, 79, 207, 44);
 		getContentPane().add(comboVendedor);
 		
@@ -52,11 +51,20 @@ public class VPedido extends JDialog {
 		getContentPane().add(btnAtras);
 		
 		JButton btnEnviar = new JButton("Continuar");
+		btnEnviar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnEnviar.setBounds(299, 216, 89, 23);
 		getContentPane().add(btnEnviar);
 		
 		JSpinner spinnerCant = new JSpinner();
 		spinnerCant.setBounds(199, 156, 113, 35);
 		getContentPane().add(spinnerCant);
+	}
+
+	private void cargarProductos(String id, ControladorClie datos) {
+		// TODO Auto-generated method stub
+		
 	}
 }
