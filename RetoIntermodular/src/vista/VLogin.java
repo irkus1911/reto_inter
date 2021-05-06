@@ -39,7 +39,7 @@ public class VLogin extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
-			JLabel lblId = new JLabel("DNI/CIF");
+			JLabel lblId = new JLabel("ID");
 			lblId.setBounds(48, 67, 46, 14);
 			contentPanel.add(lblId);
 		}
@@ -58,7 +58,7 @@ public class VLogin extends JDialog {
 		contentPanel.add(textFieldContraseina);
 		textFieldContraseina.setColumns(10);
 		
-		JButton btnContinuar = new JButton("Login");
+		JButton btnContinuar = new JButton("Continuar");
 		btnContinuar.setBounds(335, 217, 89, 23);
 		contentPanel.add(btnContinuar);
 		

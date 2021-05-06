@@ -40,24 +40,28 @@ public class VPrincipalComercio extends JFrame {
 		contentPane.setLayout(null);
 		
 		JButton btnRevisarStock = new JButton("Stock");
-		btnRevisarStock.setBounds(59, 61, 89, 23);
+		btnRevisarStock.setBounds(159, 140, 89, 23);
 		contentPane.add(btnRevisarStock);
 		
 		JButton btnHacerPedido = new JButton("Realizar pedido");
-		btnHacerPedido.setBounds(247, 61, 135, 23);
+		btnHacerPedido.setBounds(263, 89, 135, 23);
 		contentPane.add(btnHacerPedido);
 		
 		JButton btnHistoricoCliente = new JButton("Historico cliente");
-		btnHistoricoCliente.setBounds(59, 158, 130, 23);
+		btnHistoricoCliente.setBounds(30, 192, 130, 23);
 		contentPane.add(btnHistoricoCliente);
 		
 		JButton btnHistoricoSuministrador = new JButton("Historico Suministrador");
-		btnHistoricoSuministrador.setBounds(247, 158, 177, 23);
+		btnHistoricoSuministrador.setBounds(247, 192, 177, 23);
 		contentPane.add(btnHistoricoSuministrador);
 		
 		JButton btnValidarPedidos = new JButton("Validar Pedidos");
-		btnValidarPedidos.setBounds(150, 111, 130, 23);
+		btnValidarPedidos.setBounds(30, 89, 130, 23);
 		contentPane.add(btnValidarPedidos);
+		
+		JButton btnCerrarSesion = new JButton("CerrarSesion");
+		btnCerrarSesion.setBounds(30, 26, 109, 23);
+		contentPane.add(btnCerrarSesion);
 	}
 
 }

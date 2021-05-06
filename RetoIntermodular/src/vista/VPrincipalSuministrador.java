@@ -6,6 +6,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
 
 public class VPrincipalSuministrador extends JFrame {
 
@@ -37,6 +42,21 @@ public class VPrincipalSuministrador extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		
+		JPanel panel = new JPanel();
+		contentPane.add(panel, BorderLayout.CENTER);
+		panel.setLayout(null);
+		
+		JButton btnRevisarStock = new JButton("Stock");
+		btnRevisarStock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnRevisarStock.setBounds(123, 110, 122, 41);
+		panel.add(btnRevisarStock);
+		
+		JButton btnCerrarSesion = new JButton("CerrarSesion");
+		btnCerrarSesion.setBounds(10, 11, 105, 23);
+		panel.add(btnCerrarSesion);
 	}
-
 }

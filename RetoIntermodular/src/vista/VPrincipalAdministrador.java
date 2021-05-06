@@ -46,11 +46,15 @@ public class VPrincipalAdministrador extends JFrame {
 		contentPane.add(btnAlta);
 		
 		JComboBox comboTipoUsuarioAlta = new JComboBox();
-		comboTipoUsuarioAlta.setBounds(100, 77, 270, 22);
+		comboTipoUsuarioAlta.setBounds(85, 109, 270, 22);
 		contentPane.add(comboTipoUsuarioAlta);
 		
 		JButton btnAcceso = new JButton("Acceder");
 		btnAcceso.setBounds(67, 206, 89, 23);
 		contentPane.add(btnAcceso);
+		
+		JButton btnCerrarSesion = new JButton("CerrarSesion");
+		btnCerrarSesion.setBounds(10, 11, 120, 23);
+		contentPane.add(btnCerrarSesion);
 	}
 }
