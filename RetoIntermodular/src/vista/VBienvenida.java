@@ -1,56 +1,54 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.FlowLayout;
 
-import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
 
-public class VClientePrincipal extends JFrame {
+public class VBienvenida extends JDialog {
 
-	private JPanel contentPane;
+	private final JPanel contentPanel = new JPanel();
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VClientePrincipal frame = new VClientePrincipal();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		try {
+			VBienvenida dialog = new VBienvenida();
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the dialog.
 	 */
-	public VClientePrincipal() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public VBienvenida() {
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setLayout(null);
 		
-		JButton btnRealizarPedido = new JButton("Realizar Pedido");
-		btnRealizarPedido.setBounds(52, 92, 129, 57);
-		contentPane.add(btnRealizarPedido);
+		JButton btnIrALogin = new JButton("Continuar");
+		btnIrALogin.setBounds(297, 194, 89, 23);
+		contentPanel.add(btnIrALogin);
 		
-		JButton btnConsultarPedidos = new JButton("Consultar Pedidos");
-		btnConsultarPedidos.setBounds(234, 92, 129, 57);
-		contentPane.add(btnConsultarPedidos);
+		JLabel lblBienvenida = new JLabel("Bienvenide les gallines");
+		lblBienvenida.setBounds(158, 41, 137, 14);
+		contentPanel.add(lblBienvenida);
 		
-		JButton btnCerrarSesion = new JButton("Cerrar Sesion");
-		btnCerrarSesion.setBounds(10, 11, 117, 23);
-		contentPane.add(btnCerrarSesion);
+		JComboBox comboTipoUsuarioLogin = new JComboBox();
+		comboTipoUsuarioLogin.setBounds(126, 123, 182, 22);
+		contentPanel.add(comboTipoUsuarioLogin);
 	}
-
 }
-
