@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 
-public class VClientePrincipal extends JFrame {
+public class VCliente extends JFrame {
 
 	private JPanel contentPane;
 
@@ -19,7 +19,7 @@ public class VClientePrincipal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VClientePrincipal frame = new VClientePrincipal();
+					VCliente frame = new VCliente();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -31,7 +31,7 @@ public class VClientePrincipal extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VClientePrincipal() {
+	public VCliente() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -46,6 +46,10 @@ public class VClientePrincipal extends JFrame {
 		JButton btnConsultarPedidos = new JButton("Consultar Pedidos");
 		btnConsultarPedidos.setBounds(234, 92, 129, 57);
 		contentPane.add(btnConsultarPedidos);
+		
+		JButton btnCerrarSesion = new JButton("Cerrar Sesion");
+		btnCerrarSesion.setBounds(307, 228, 117, 23);
+		contentPane.add(btnCerrarSesion);
 	}
 
 }
