@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JSpinner;
+import javax.swing.JLabel;
 
 public class VPedido extends JDialog {
 
@@ -58,5 +59,17 @@ public class VPedido extends JDialog {
 		JSpinner spinnerCant = new JSpinner();
 		spinnerCant.setBounds(199, 156, 113, 35);
 		getContentPane().add(spinnerCant);
+		
+		JLabel lblNomProducto = new JLabel("Producto");
+		lblNomProducto.setBounds(23, 32, 81, 29);
+		getContentPane().add(lblNomProducto);
+		
+		JLabel lblNomVendedor = new JLabel("Vendedor");
+		lblNomVendedor.setBounds(23, 88, 65, 35);
+		getContentPane().add(lblNomVendedor);
+		
+		JLabel lblCant = new JLabel("Cantidad");
+		lblCant.setBounds(143, 162, 48, 23);
+		getContentPane().add(lblCant);
 	}
 }

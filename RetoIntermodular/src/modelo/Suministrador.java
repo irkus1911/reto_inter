@@ -7,6 +7,9 @@ public class Suministrador {
 	private String nombreSum;
 	private String claveSum;
 	
+	
+	
+	
 	//Getters y Setters
 	public String getCifSum() {
 		return cifSum;
@@ -26,7 +29,12 @@ public class Suministrador {
 	public void setClaveSum(String claveSum) {
 		this.claveSum = claveSum;
 	}
+	public Suministrador() {
+		super();
+	}
+	
 	//Constructores
+	
 	
 
 }
