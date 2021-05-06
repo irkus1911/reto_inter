@@ -152,24 +152,24 @@ public class Util {
 			return letra.charAt(0);
 		}
 		//Pido fecha
-			public static LocalDate pidoFechaDMA(String message) {
-				String fechaS;
-				boolean hay;
-				LocalDate fecha = null;
-				//parseador
-				DateTimeFormatter formateador= DateTimeFormatter.ofPattern("dd-MM-yyyy");
-				do {
-					hay = true;
-					fechaS = Util.introducirCadena(message+" en formato dd-mm-aaaa: ");
-					try {
-						fecha = LocalDate.parse(fechaS, formateador);
-					} catch (DateTimeParseException p) {
-						System.out.println("Error... formato de fecha introducido incorrecto.");
-						hay = false;
-					}
-				} while (!hay);
-				return fecha;
-			}
+		public static LocalDate pidoFechaDMA(String message) {
+			String fechaS;
+			boolean hay;
+			LocalDate fecha = null;
+			//parseador
+			DateTimeFormatter formateador= DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			do {
+				hay = true;
+				fechaS = Util.introducirCadena(message+" en formato dd-mm-aaaa: ");
+				try {
+					fecha = LocalDate.parse(fechaS, formateador);
+				} catch (DateTimeParseException p) {
+					System.out.println("Error... formato de fecha introducido incorrecto.");
+					hay = false;
+				}
+			} while (!hay);
+			return fecha;
+		}
 			public static char leerCharArray(char caracteres[], String message){
 				int i;
 				boolean error=false;

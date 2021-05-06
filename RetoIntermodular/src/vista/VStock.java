@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.JLabel;
+import javax.swing.JToggleButton;
+import javax.swing.JSpinner;
 
 public class VStock extends JDialog {
 
@@ -50,11 +52,11 @@ public class VStock extends JDialog {
 		}
 		
 		JLabel lblNombreStock = new JLabel("Stock de ....");
-		lblNombreStock.setBounds(69, 11, 227, 23);
+		lblNombreStock.setBounds(69, 11, 337, 23);
 		contentPanel.add(lblNombreStock);
 		
 		tableStock = new JTable();
-		tableStock.setBounds(94, 78, 227, 90);
+		tableStock.setBounds(24, 58, 227, 90);
 		contentPanel.add(tableStock);
 	}
 }
