@@ -9,6 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 
+import logica.*;
+import modelo.*;
+
 public class VValidar extends JDialog {
 
 	/**
