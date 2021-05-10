@@ -8,5 +8,5 @@ public interface ControladorCom {
 	public void historicoClieCom();
 	public void validarPedidoCom();
 	public void crearPedidoComSum();
-	public void historicoComSum();
+	public void historicoComSum(String id);
 }
