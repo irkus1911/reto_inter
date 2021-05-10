@@ -107,11 +107,7 @@ public class ControladorComImplementacion implements ControladorCom {
 		return null;
 	}
 
-	@Override
-	public void validarPedidoCom() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 
 	@Override
@@ -347,6 +343,18 @@ public class ControladorComImplementacion implements ControladorCom {
 		}
 		return sto;
 
+	}
+
+	@Override
+	public void validarPedidoCom(String id, String id_com, String id_prod, LocalDate fecha) {
+		
+		
+	}
+
+	@Override
+	public Collection<Pedido> listarPed(String id) throws ReadException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

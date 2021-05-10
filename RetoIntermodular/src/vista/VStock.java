@@ -25,6 +25,10 @@ public class VStock extends JDialog {
 
 	
 	//STOCK SUMINISTRADOR
+	/**
+	 * @wbp.parser.constructor
+	 */
+	
 	public VStock(VSuministrador vSuministrador, boolean b, String id_sum, ControladorSum datos) {
 
 		setBounds(100, 100, 450, 300);
@@ -36,6 +40,7 @@ public class VStock extends JDialog {
 			btnNewButton.setBounds(10, 227, 89, 23);
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					dispose();
 				}
 			});
 			contentPanel.setLayout(null);
@@ -77,6 +82,7 @@ public class VStock extends JDialog {
 			btnNewButton.setBounds(10, 227, 89, 23);
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					dispose();
 				}
 			});
 			contentPanel.setLayout(null);

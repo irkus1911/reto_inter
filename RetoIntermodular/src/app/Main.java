@@ -11,7 +11,7 @@ import vista.*;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		ControladorClie datosClie = new ControladorClieImplementacion();
 		ControladorCom datosCom = new ControladorComImplementacion();
 		ControladorSum datosSum = new ControladorSumImplementacion();

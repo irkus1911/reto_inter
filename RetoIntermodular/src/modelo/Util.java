@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -198,6 +199,8 @@ public class Util {
 				}while(error);
 				return aux;
 			}
+			
+			
 			
 			//Devuelve el número de objetos de un fichero
 			public static int calculoFichero(File fich){
