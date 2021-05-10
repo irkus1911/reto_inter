@@ -7,6 +7,12 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import modelo.ControladorAdmin;
+import modelo.ControladorClie;
+import modelo.ControladorCom;
+import modelo.ControladorSum;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
@@ -14,7 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
-public class VBienvenida extends JDialog implements ActionListener {
+public class VBienvenida extends JDialog  {
 
 	private final JPanel contentPanel = new JPanel();
 	private JComboBox comboTipoUsuarioLogin;
@@ -24,20 +30,18 @@ public class VBienvenida extends JDialog implements ActionListener {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			VBienvenida dialog = new VBienvenida();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) {
+//		try {
+//			VBienvenida dialog = new VBienvenida();
+//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//			dialog.setVisible(true);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-	/**
-	 * Create the dialog.
-	 */
-	public VBienvenida() {
+	
+	public VBienvenida(ControladorClie datosClie, ControladorCom datosCom, ControladorSum datosSum, ControladorAdmin datosAdmin) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -45,6 +49,11 @@ public class VBienvenida extends JDialog implements ActionListener {
 		contentPanel.setLayout(null);
 
 		btnIrALogin = new JButton("Continuar");
+		btnIrALogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			login(datosClie,datosCom,datosSum,datosAdmin);
+			}
+		});
 		btnIrALogin.setBounds(297, 194, 89, 23);
 		contentPanel.add(btnIrALogin);
 
@@ -60,40 +69,41 @@ public class VBienvenida extends JDialog implements ActionListener {
 		contentPanel.add(comboTipoUsuarioLogin);
 		
 
-		btnIrALogin.addActionListener(this);
+		
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+	
+	public void login(ControladorClie datosClie, ControladorCom datosCom, ControladorSum datosSum, ControladorAdmin datosAdmin ) {
 		// TODO Auto-generated method stub
 		if (comboTipoUsuarioLogin.getSelectedIndex() == 0) {
-			if (e.getSource().equals(btnIrALogin)) {
-				VLogin login=new VLogin("Administrador");
+				
+				/*VLogin login=new VLogin(datosAdmin);
 				login.setVisible(true);
-				this.dispose();
+				this.dispose();*/
 
-			}
+			
 		} else if (comboTipoUsuarioLogin.getSelectedIndex() == 1) {
-			if (e.getSource().equals(btnIrALogin)) {
-				VLogin login=new VLogin("Cliente");
+			
+				VLogin login=new VLogin(datosClie);
 				login.setVisible(true);
 				this.dispose();
-			}
+			
 		} else if (comboTipoUsuarioLogin.getSelectedIndex() == 2) {
-			if (e.getSource().equals(btnIrALogin)) {
-				VLogin login=new VLogin("Comercio");
+			
+				/*VLogin login=new VLogin(datosCom);
 				login.setVisible(true);
-				this.dispose();
-			}
+				this.dispose();*/
+			
 		} else if (comboTipoUsuarioLogin.getSelectedIndex() == 3) {
-			if (e.getSource().equals(btnIrALogin)) {
-				VLogin login=new VLogin("Suministrador");
+			
+				/*VLogin login=new VLogin(datosSum);
 				login.setVisible(true);
-				this.dispose();
-			}
+				this.dispose();*/
+			
 		} else {
 			JOptionPane.showMessageDialog(btnIrALogin, "Error seleccion incorrecta", "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
 }

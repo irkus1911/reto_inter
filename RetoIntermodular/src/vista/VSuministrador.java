@@ -12,14 +12,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
-public class VSuministrador extends JFrame implements ActionListener{
+public class VSuministrador extends JFrame {
 
 	private JPanel contentPane;
-	private JButton btnRevisarStock ;
-	private JButton btnCerrarSesion;
-	private JButton btnAñadirProducto;
-	private JButton btnValidarPedidos;
-	private JButton btnHistorico;
+
 	/**
 	 * Launch the application.
 	 */
@@ -51,65 +47,16 @@ public class VSuministrador extends JFrame implements ActionListener{
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		 btnRevisarStock = new JButton("Stock");
-		
-		btnRevisarStock.setBounds(26, 79, 156, 41);
+		JButton btnRevisarStock = new JButton("Stock");
+		btnRevisarStock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnRevisarStock.setBounds(123, 110, 122, 41);
 		panel.add(btnRevisarStock);
 		
-		 btnCerrarSesion = new JButton("CerrarSesion");
-		btnCerrarSesion.setBounds(10, 11, 138, 30);
+		JButton btnCerrarSesion = new JButton("CerrarSesion");
+		btnCerrarSesion.setBounds(10, 11, 105, 23);
 		panel.add(btnCerrarSesion);
-		
-		 btnAñadirProducto = new JButton("A\u00F1adir Producto");
-		btnAñadirProducto.setBounds(258, 79, 156, 41);
-		panel.add(btnAñadirProducto);
-		
-		 btnValidarPedidos = new JButton("Validar Pedidos");
-		btnValidarPedidos.setBounds(26, 175, 156, 41);
-		panel.add(btnValidarPedidos);
-		
-		 btnHistorico = new JButton("Historico");
-		btnHistorico.setBounds(258, 175, 156, 41);
-		panel.add(btnHistorico);
-		
-		btnAñadirProducto.addActionListener(this);
-		btnCerrarSesion.addActionListener(this);
-		btnHistorico.addActionListener(this);
-		btnRevisarStock.addActionListener(this);
-		btnValidarPedidos.addActionListener(this);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getSource().equals(btnAñadirProducto)) {
-			VProducto ven=new VProducto();
-			ven.setVisible(true);
-		
-			
-		}
-		if(e.getSource().equals(btnCerrarSesion)) {
-			VBienvenida ven=new VBienvenida();
-			ven.setVisible(true);
-			this.dispose();
-		
-		}
-		if(e.getSource().equals(btnHistorico)) {
-			VHistorico ven=new VHistorico();
-			ven.setVisible(true);
-		
-			
-		}
-		if(e.getSource().equals(btnRevisarStock)) {
-			VStock ven=new VStock();
-			ven.setVisible(true);
-		
-			
-		}
-		if(e.getSource().equals(btnValidarPedidos)) {
-			VValidar ven=new VValidar();
-			ven.setVisible(true);
-		
-		}
 	}
 }
