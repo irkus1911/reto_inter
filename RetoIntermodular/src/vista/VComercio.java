@@ -6,6 +6,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import logica.ControladorClie;
+import logica.ControladorCom;
+
 import javax.swing.JButton;
 
 public class VComercio extends JFrame {
@@ -15,6 +19,7 @@ public class VComercio extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -27,11 +32,12 @@ public class VComercio extends JFrame {
 			}
 		});
 	}
-
+*/
 	/**
 	 * Create the frame.
 	 */
-	public VComercio() {
+	public VComercio(VLogin vLogin, boolean b, String text, ControladorCom datos) {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();

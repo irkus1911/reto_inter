@@ -1,1 +1,14 @@
-metodo de añadir y revisar producto y enlazar los botones de suministrador con las siguientes
+actualizado : 
+
+	- ControlSumImplementacion :
+		- Modi comprobarLogin
+
+Avances : 
+
+	- Login Suministrador 
+	- Cerrar Sesion
+
+
+Nota Importante : 
+
+	- Los cerrar sesion devuelven todos los datos nulos al vienbenida 
