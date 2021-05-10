@@ -1,5 +1,1 @@
-actualizado : 
-
-	-ControlClieImplementacion
-	-ControlComImplementacion
-	-ControlSumImplementacion
+Combinadas versiones 12
