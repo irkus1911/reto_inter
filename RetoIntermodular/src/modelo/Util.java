@@ -5,9 +5,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -198,7 +202,13 @@ public class Util {
 				}while(error);
 				return aux;
 			}
-			
+			// String a Date Formato: yyyy-MM-dd
+			public static Date StringToDate(String fecha) throws ParseException {
+				DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				
+				Date date = format.parse(fecha);
+				return date;
+			}
 			//Devuelve el número de objetos de un fichero
 			public static int calculoFichero(File fich){
 				int cont=0;
