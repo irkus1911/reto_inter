@@ -40,31 +40,11 @@ public class ControladorClieImplementacion implements ControladorClie {
 		this.pass = this.configFile.getString("PASSWORD");
 	}
 
-	public void openConnection() {
-
-		try {
-
-			con = DriverManager.getConnection(this.url, this.user, this.pass);
-
-			System.out.println("Coneccion OK");
-
-		} catch (SQLException e) {
-			System.out.println("Error al intentar abrir la BD");
-		}
-	}
-
-	public void closeConnection() throws SQLException {
-		if (stmt != null) {
-			stmt.close();
-		}
-		if (con != null) {
-			con.close();
-		}
-	}
 
 	@Override
 	public void crearPedidoClieCom(String id_clie, String id_com, String id_prod, int cant) throws CreateException {
-		this.openConnection();
+		
+		con = Util.openConnection(user,url,pass,con);
 		try {
 			stmt = con.prepareStatement(hacerPedido);
 			stmt.setString(1, id_clie);
@@ -76,14 +56,11 @@ public class ControladorClieImplementacion implements ControladorClie {
 			stmt.executeUpdate();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-
 			throw new CreateException(e.getMessage());
 		}
 		try {
-			this.closeConnection();
+			Util.closeConnection(stmt,con);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -94,7 +71,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 		Collection<Historico> historico = new HashSet<Historico>();
 		ResultSet rs = null;
 
-		this.openConnection();
+		con = Util.openConnection(user,url,pass,con);
 		try {
 			stmt = con.prepareStatement(mostrarPedidos);
 			stmt.setString(1, id);
@@ -115,24 +92,21 @@ public class ControladorClieImplementacion implements ControladorClie {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-
 			throw new ReadException(e.getMessage());
 		}
 
 		try {
-			this.closeConnection();
+			Util.closeConnection(stmt,con);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}if (rs != null) {
+		}
+		if (rs != null) {
 			try {
 				rs.close();
 			} catch (SQLException ex) {
 				System.out.println("Error en cierre del ResultSet");
 			}
 		}
-		
 		return historico;
 	}
 
@@ -143,14 +117,15 @@ public class ControladorClieImplementacion implements ControladorClie {
 
 		boolean encontrado = false;
 		ResultSet rs = null;
-		this.openConnection();
+		
+		con = Util.openConnection(user,url,pass,con);
+		
 		try {
-
+			
 			stmt = con.prepareStatement(comprobarLogin);
 			stmt.setString(1, id);
 			stmt.setString(2, clave);
 
-			// PETA AQUI
 			rs = stmt.executeQuery();
 			System.out.println("TRY5");
 			while (rs.next() && !encontrado) {
@@ -163,7 +138,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 		}
 
 		try {
-			this.closeConnection();
+			Util.closeConnection(stmt,con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -176,16 +151,16 @@ public class ControladorClieImplementacion implements ControladorClie {
 		}
 
 		return encontrado;
-
 	}
 
 	@Override
 	public Collection<Producto> listarProd() throws ReadException {
-		// TODO Auto-generated method stub
+
 		Producto prod;
 		Collection<Producto> producto = new HashSet<>();
 		ResultSet rs = null;
-		this.openConnection();
+
+		con = Util.openConnection(user,url,pass,con);
 		try {
 			stmt = con.prepareStatement(listarProductos);
 			rs = stmt.executeQuery();
@@ -197,17 +172,16 @@ public class ControladorClieImplementacion implements ControladorClie {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-
 			throw new ReadException(e.getMessage());
 		}
 
 		try {
-			this.closeConnection();
+			Util.closeConnection(stmt,con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}if (rs != null) {
+		}
+		if (rs != null) {
 			try {
 				rs.close();
 			} catch (SQLException ex) {
@@ -219,11 +193,12 @@ public class ControladorClieImplementacion implements ControladorClie {
 
 	@Override
 	public Collection<Comercio> listarVendedor() throws ReadException {
-		// TODO Auto-generated method stub
+		
 		Comercio com;
 		Collection<Comercio> comercios = new HashSet<>();
 		ResultSet rs = null;
-		this.openConnection();
+
+		con = Util.openConnection(user,url,pass,con);
 		try {
 			stmt = con.prepareStatement(listarVendedores);
 			rs = stmt.executeQuery();
@@ -243,11 +218,12 @@ public class ControladorClieImplementacion implements ControladorClie {
 		}
 
 		try {
-			this.closeConnection();
+			Util.closeConnection(stmt,con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}if (rs != null) {
+		}
+		if (rs != null) {
 			try {
 				rs.close();
 			} catch (SQLException ex) {
@@ -259,11 +235,12 @@ public class ControladorClieImplementacion implements ControladorClie {
 
 	@Override
 	public Integer listarCant(String id_com, String id_prod) throws ReadException {
-		// TODO Auto-generated method stub
+		
 		int cant = 0;
 
 		ResultSet rs = null;
-		this.openConnection();
+		
+		con = Util.openConnection(user,url,pass,con);
 		try {
 			stmt = con.prepareStatement(leerCant);
 			stmt.setString(1, id_com);
@@ -280,11 +257,12 @@ public class ControladorClieImplementacion implements ControladorClie {
 		}
 
 		try {
-			this.closeConnection();
+			Util.closeConnection(stmt,con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}if (rs != null) {
+		}
+		if (rs != null) {
 			try {
 				rs.close();
 			} catch (SQLException ex) {

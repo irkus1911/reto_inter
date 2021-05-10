@@ -1,14 +1,5 @@
 actualizado : 
 
-	- ControlSumImplementacion :
-		- Modi comprobarLogin
-
-Avances : 
-
-	- Login Suministrador 
-	- Cerrar Sesion
-
-
-Nota Importante : 
-
-	- Los cerrar sesion devuelven todos los datos nulos al vienbenida 
+	-ControlClieImplementacion
+	-ControlComImplementacion
+	-ControlSumImplementacion
