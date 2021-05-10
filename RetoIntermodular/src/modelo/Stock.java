@@ -1,13 +1,15 @@
 package modelo;
 
 public class Stock extends Producto {
-	 private String id_sum,id_prod;
+	
+	 private String id_usu,id_prod;
 	 private int cantidad;
-	public String getId_sum() {
-		return id_sum;
+	 
+	public String getId_usu() {
+		return id_usu;
 	}
-	public void setId_sum(String id_sum) {
-		this.id_sum = id_sum;
+	public void setId_usu(String id_usu) {
+		this.id_usu = id_usu;
 	}
 	public String getId_prod() {
 		return id_prod;
