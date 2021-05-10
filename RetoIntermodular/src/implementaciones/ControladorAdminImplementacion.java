@@ -2,7 +2,6 @@ package implementaciones;
 
 import logica.*;
 import modelo.*;
-import excepciones.*;
 
 public class ControladorAdminImplementacion implements ControladorAdmin {
 

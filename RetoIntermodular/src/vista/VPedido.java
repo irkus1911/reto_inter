@@ -68,6 +68,9 @@ public class VPedido extends JDialog {
 				if(comboVendedor.getSelectedIndex()!=-1) {
 					id_com=comboVendedor.getSelectedItem().toString().substring(0,comboVendedor.getSelectedItem().toString().indexOf(" - "));
 					sm = new SpinnerNumberModel(0, 0,leerCantidad(id_prod,id_com,datos) , 1);
+					spinnerCant = new JSpinner(sm);
+					spinnerCant.setBounds(199, 156, 113, 35);
+					getContentPane().add(spinnerCant);
 					
 				}
 			}
@@ -77,9 +80,7 @@ public class VPedido extends JDialog {
 		
 		
 		
-		spinnerCant = new JSpinner(sm);
-		spinnerCant.setBounds(199, 156, 113, 35);
-		getContentPane().add(spinnerCant);
+		
 		
 		JButton btnAtras = new JButton("Atr\u00E1s");
 		btnAtras.addActionListener(new ActionListener() {

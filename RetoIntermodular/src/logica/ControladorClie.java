@@ -3,7 +3,6 @@ package logica;
 import java.util.Collection;
 
 import modelo.*;
-import excepciones.*;
 
 public interface ControladorClie {
 	
