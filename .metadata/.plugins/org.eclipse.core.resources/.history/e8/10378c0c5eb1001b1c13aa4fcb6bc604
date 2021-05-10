@@ -8,8 +8,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import logica.*;
-import modelo.*;
+import excepciones.ReadException;
+import modelo.ControladorClie;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
