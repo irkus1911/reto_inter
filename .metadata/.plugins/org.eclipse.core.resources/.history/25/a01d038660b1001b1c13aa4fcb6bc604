@@ -26,7 +26,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 	// Sentencias
 
 	// modificado select de cliente
-	private final String comprobarLogin = "SELECT * FROM cliente WHERE id_clie = ? and clave = ?";
+	private final String comprobarLogin = "SELECT clave FROM cliente WHERE id_clie = ? and clave = ?";
 	private final String mostrarPedidos = "SELECT  comercio.nombre_com, comercio.id_com, producto.id_prod, producto.nombre, historico_c.cant, historico_c.fecha FROM comercio, producto, historico_c WHERE comercio.id_com = historico_c.id_com AND producto.id_prod = historico_c.id_prod AND historico_c.id_clie = ?";
 	private final String hacerPedido = "CALL `add_pedido_com`(?,?,?,?,?)";
 	private final String listarProductos = "SELECT * FROM producto";
@@ -159,6 +159,8 @@ public class ControladorClieImplementacion implements ControladorClie {
 			}
 
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
+
 			throw new ReadException(e.getMessage());
 		}
 

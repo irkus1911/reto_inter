@@ -88,15 +88,15 @@ public class VBienvenida extends JDialog  {
 			
 		} else if (comboTipoUsuarioLogin.getSelectedIndex() == 2) {
 			
-				VLogin login=new VLogin(datosCom);
+				/*VLogin login=new VLogin(datosCom);
 				login.setVisible(true);
-				this.dispose();
+				this.dispose();*/
 			
 		} else if (comboTipoUsuarioLogin.getSelectedIndex() == 3) {
 			
-				VLogin login=new VLogin(datosSum);
+				/*VLogin login=new VLogin(datosSum);
 				login.setVisible(true);
-				this.dispose();
+				this.dispose();*/
 			
 		} else {
 			JOptionPane.showMessageDialog(btnIrALogin, "Error seleccion incorrecta", "ERROR",
