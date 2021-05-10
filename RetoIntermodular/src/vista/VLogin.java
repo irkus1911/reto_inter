@@ -8,9 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import excepciones.*;
-import modelo.*;
-
+import java.sql.*;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -18,6 +16,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+
+import logica.*;
+import modelo.*;
 
 public class VLogin extends JDialog {
 
@@ -40,7 +41,7 @@ public class VLogin extends JDialog {
 
 	/**
 	 * Create the dialog.
-	 *//*
+	 */
 	public VLogin(ControladorClie datos) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -97,6 +98,8 @@ public class VLogin extends JDialog {
 		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loginClie(datos);
+			
+				
 			};
 		});
 		btnContinuar.setBounds(335, 217, 89, 23);
@@ -105,8 +108,8 @@ public class VLogin extends JDialog {
 		JButton btnCerrar = new JButton("Cerrar");
 		btnCerrar.setBounds(236, 217, 89, 23);
 		contentPanel.add(btnCerrar);
-	}*/
-/*	public VLogin(ControladorCom datos) {
+	}
+	/*public VLogin(ControladorCom datos) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -171,7 +174,7 @@ public class VLogin extends JDialog {
 		btnCerrar.setBounds(236, 217, 89, 23);
 		contentPanel.add(btnCerrar);
 	}*/
-	public VLogin(ControladorSum datos) {
+/*	public VLogin(ControladorSum datos) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -235,8 +238,8 @@ public class VLogin extends JDialog {
 		JButton btnCerrar = new JButton("Cerrar");
 		btnCerrar.setBounds(236, 217, 89, 23);
 		contentPanel.add(btnCerrar);
-	}/*
-	public VLogin(ControladorAdmin datos) {
+	}*/
+/*	public VLogin(ControladorAdmin datos) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -302,12 +305,40 @@ public class VLogin extends JDialog {
 		contentPanel.add(btnCerrar);
 	}*/
 	
-	/*public void loginClie(ControladorClie datos) {
+	public void loginClie(ControladorClie datos) {
 		try {
+		
 			boolean login = datos.login(textFieldId.getText(), textFieldContraseina.getText());
+			
+			//prueba
+//			boolean login = false;
+//			
+//			try {
+//				
+//				Class.forName("com.mysql.jdbc.Driver");
+//				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto_final","root","1234");
+//				Statement stmt = con.createStatement();
+//				String sql = "Select * from cliente where id_clie='" + textFieldId.getText() + "' and clave='" + textFieldContraseina.getText() + "'";
+//				ResultSet rs = stmt.executeQuery(sql);
+//				
+//				if(rs.next()) {
+//					JOptionPane.showMessageDialog(null, "Bien Login");
+//					login = true;
+//				}else {
+//					JOptionPane.showMessageDialog(null, "ffffffffff");
+//				}
+//				con.close();
+//				
+//			}catch ( Exception eb) {
+//				System.out.println(eb);
+//			}
+			
+			
 			if (login) {
+				
 				VCliente vent = new VCliente(this, textFieldId.getText(), datos);
 				vent.setVisible(true);
+				
 			} else {
 				JOptionPane.showMessageDialog(textFieldContraseina, "Se han introducido credenciales erroneas",
 						"Error login", JOptionPane.ERROR_MESSAGE);
@@ -316,7 +347,10 @@ public class VLogin extends JDialog {
 				textFieldId.requestFocus();
 
 			}
-		} catch (ReadException ex) {
+			
+			//ReadException Q lo cambie yo 
+		} catch (Exception ex) {
+			
 			JOptionPane.showMessageDialog(this,
 					"Error al intentar comprobar credenciales en la base de datos", "Error lectura BBDD",
 					JOptionPane.ERROR_MESSAGE);
@@ -341,7 +375,7 @@ public class VLogin extends JDialog {
 					"Error al intentar comprobar credenciales en la base de datos", "Error lectura BBDD",
 					JOptionPane.ERROR_MESSAGE);
 		}
-	}*/
+	}
 	public void loginSum(ControladorSum datos) {
 		try {
 			boolean login = datos.login(textFieldId.getText(), textFieldContraseina.getText());
@@ -361,9 +395,9 @@ public class VLogin extends JDialog {
 					"Error al intentar comprobar credenciales en la base de datos", "Error lectura BBDD",
 					JOptionPane.ERROR_MESSAGE);
 		}
-	}
+	}*/
 	/*public void loginAdmin() { //Ya que el usuario Administrador va a tener unas credenciales predefinidas  se realiza el login en la propia ventana, o con parametros predefinidos en el controlodar o en un archivo de configuracion
-		/*try {
+		try {
 			boolean login = datos.login(textFieldId.getText(), textFieldContraseina.getText());
 			if (login) {
 				VAdmin vent = new VAdmin(this, true, textFieldId.getText(), datos);

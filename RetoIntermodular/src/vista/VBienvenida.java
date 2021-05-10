@@ -8,10 +8,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import modelo.ControladorAdmin;
-import modelo.ControladorClie;
-import modelo.ControladorCom;
-import modelo.ControladorSum;
+import logica.*;
+import modelo.*;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

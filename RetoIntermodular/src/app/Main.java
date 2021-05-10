@@ -1,16 +1,23 @@
 package app;
 
-import modelo.ControladorSum;
-import modelo.ControladorSumImplementacion;
-import vista.VBienvenida;
+import java.sql.*;
+
+import implementaciones.*;
+import logica.*;
+import modelo.*;
+import vista.*;
+
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ControladorSum datos=new ControladorSumImplementacion();
-		VBienvenida ven=new VBienvenida(null, null, datos, null);
-		ven.setVisible(true);
+		ControladorClie datosClie = new ControladorClieImplementacion();
+		ControladorCom datosCom = new ControladorComImplementacion();
+		ControladorSum datosSum = new ControladorSumImplementacion();
+		ControladorAdmin datosAdmin = new ControladorAdminImplementacion();
+		VBienvenida vent = new VBienvenida(datosClie,datosCom,datosSum,datosAdmin);
+		vent.setVisible(true);
 	}
 
 }
