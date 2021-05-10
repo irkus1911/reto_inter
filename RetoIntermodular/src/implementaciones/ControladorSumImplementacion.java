@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.ResourceBundle;
 
 import logica.ControladorSum;
 import logica.ReadException;
@@ -23,27 +24,43 @@ public class ControladorSumImplementacion implements ControladorSum {
 	private Connection con;
 	private PreparedStatement stmt;
 	private ResultSet rs;
-	final String callValidar="CALL aceptar_pedido_s(?,?,?)";
-	final String queryPedidos ="SELECT  id_com,fecha,estado,id_prod FROM pedidos_s WHERE id_com=?";
-	final String querySelectStock="SELECT stock_sum.id_prod, stock_sum.cant, producto.nombre FROM stock_sum,producto WHERE producto.id_prod=stock_sum.id_prod AND stock_sum.id_sum=? ";
-	final String queryCall="CALL add_stock_sum ('?', '?', '?') ";
+	private ResourceBundle configFile;
+	private String user, url, pass;
 	
-	private void openConnection(){
-	try {
-	String url = "jdbc:mysql://localhost:3306/proyecto_final?serverTimezone=Europe/Madrid&usessl=false";
-	con =  DriverManager.getConnection(url+"?" +"user=root &password=abcd*1234");
-	} catch (SQLException e) {
-	System.out.println("Error al intentar abrir la BD");
-	}
-	}
-	private void closeConnection() throws SQLException {
-	if (stmt != null) {
-	stmt.close();
-	}
-	if(con != null)
-	con.close();
+	// Sentencias
+	private final String comprobarLogin = "SELECT * FROM suministrador WHERE id_sum = ? and clave = ?";
+	private final String callValidar="CALL aceptar_pedido_s(?,?,?)";
+	private final String queryPedidos ="SELECT  id_com,fecha,estado,id_prod FROM pedidos_s WHERE id_com=?";
+	private final String querySelectStock="SELECT stock_sum.id_prod, stock_sum.cant, producto.nombre FROM stock_sum,producto WHERE producto.id_prod=stock_sum.id_prod AND stock_sum.id_sum=? ";
+	private final String queryCall="CALL add_stock_sum ('?', '?', '?') ";
+	
+	public ControladorSumImplementacion() {
+		this.configFile = ResourceBundle.getBundle("modelo.config");
+		this.url = this.configFile.getString("URL");
+		this.user = this.configFile.getString("USER");
+		this.pass = this.configFile.getString("PASSWORD");
 	}
 
+	public void openConnection() {
+
+		try {
+
+			con = DriverManager.getConnection(this.url, this.user, this.pass);
+
+			System.out.println("Coneccion OK");
+
+		} catch (SQLException e) {
+			System.out.println("Error al intentar abrir la BD");
+		}
+	}
+	public void closeConnection() throws SQLException {
+		if (stmt != null) {
+			stmt.close();
+		}
+		if (con != null) {
+			con.close();
+		}
+	}
 
 	public Collection<Stock> stockSum(String id) {
 		// TODO Auto-generated method stub
@@ -146,9 +163,45 @@ public class ControladorSumImplementacion implements ControladorSum {
 		}
 	}
 	@Override
-	public boolean login(String id, String clave) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean login(String id, String clave) throws ReadException {
+		
+		System.out.println("Login_Login");
+
+		boolean encontrado = false;
+		ResultSet rs = null;
+		this.openConnection();
+		try {
+
+			stmt = con.prepareStatement(comprobarLogin);
+			stmt.setString(1, id);
+			stmt.setString(2, clave);
+			rs = stmt.executeQuery();
+			
+			while (rs.next() && !encontrado) {
+				System.out.println("While");
+				encontrado = true;
+			}
+
+		} catch (Exception e) {
+			throw new ReadException(e.getMessage());
+		}
+
+		try {
+			this.closeConnection();
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
+		}
+
+		return encontrado;
+
 	}
 	@Override
 	public Collection<Historico> historicoComSum(String id) throws ReadException {

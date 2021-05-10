@@ -14,6 +14,6 @@ public interface ControladorCom {
 	public Collection<Suministrador> listarVendedor(String id_prod) throws ReadException;
 	public Integer listarCant(String id_sum, String id_prod) throws ReadException;
 	public void crearPedidoComSum(String id_comp, String id_ven, String id_prod, int cant) throws CreateException;
-	public Collection<Historico> historicoComSum(String id);
+	public Collection<Historico> historicoComSum(String id) throws ReadException;
 	
 }

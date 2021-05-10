@@ -25,7 +25,7 @@ public class ControladorComImplementacion implements ControladorCom {
 	private String user, url, pass;
 
 	// Sentencias
-	private final String comprobarLogin = "EXISTS(SELECT clave FROM clientes WHERE id_clie = ? and clave = ?)";
+	private final String comprobarLogin = "SELECT clave FROM comercio WHERE id_com = ? and clave = ?";
 	private final String querySelectStock = "SELECT stock_sum.id_prod, stock_sum.cant, producto.nombre FROM stock_sum,producto WHERE producto.id_prod=stock_sum.id_prod AND stock_sum.id_sum=? ";
 	private final String listarProductos = "SELECT * FROM producto";
 	private final String hacerPedido = "CALL `add_pedido_com`(?,?,?,?,?)";

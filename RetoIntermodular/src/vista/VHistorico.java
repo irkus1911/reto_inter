@@ -57,7 +57,7 @@ public class VHistorico extends JDialog {
 	
 	}
 
-	/*public VHistorico(ActionListener actionListener, boolean b, String id, ControladorCom datos) throws ReadException {
+	public VHistorico(VComercio vCom, boolean b, String id, ControladorCom datos) throws ReadException {
 		this.setModal(b);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
@@ -87,7 +87,11 @@ public class VHistorico extends JDialog {
 		}
 		tableHistorico.setBounds(24, 194, 414, 168);
 
-	}*/
+	}
+
+	public VHistorico(VSuministrador vSuministrador, boolean b, String id_sum, ControladorSum datos) {
+		// TODO Auto-generated constructor stub
+	}
 
 	protected String[][] cargarHistoricoClie(ControladorClie datos, Collection<Historico> historico) {
 		int cont = 1;
