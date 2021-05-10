@@ -18,16 +18,9 @@ public class VHistorico extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		try {
-//			VHistorico dialog = new VHistorico();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
 
+
+	//Historico Cliente 
 	public VHistorico(VCliente clie, boolean b, String id, ControladorClie datos) throws ReadException {
 		this.setModal(b);
 		setBounds(100, 100, 450, 300);
@@ -57,7 +50,8 @@ public class VHistorico extends JDialog {
 	
 	}
 
-	/*public VHistorico(ActionListener actionListener, boolean b, String id, ControladorCom datos) throws ReadException {
+	// Historico Comercio
+	public VHistorico(VComercio vCom, boolean b, String id, ControladorCom datos) throws ReadException {
 		this.setModal(b);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
@@ -87,7 +81,13 @@ public class VHistorico extends JDialog {
 		}
 		tableHistorico.setBounds(24, 194, 414, 168);
 
-	}*/
+	}
+
+	
+	//Historico Cliente
+	public VHistorico(VSuministrador vSuministrador, boolean b, String id_sum, ControladorSum datos) {
+		
+	}
 
 	protected String[][] cargarHistoricoClie(ControladorClie datos, Collection<Historico> historico) {
 		int cont = 1;

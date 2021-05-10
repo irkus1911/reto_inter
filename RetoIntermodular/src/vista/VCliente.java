@@ -23,24 +23,8 @@ public class VCliente extends JFrame {
 	private JPanel contentPane;
 	private JButton btnCerrarSesion;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					VCliente frame = new VCliente();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	public VCliente(VLogin vLogin, String id, ControladorClie datos) {
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -85,7 +69,7 @@ public class VCliente extends JFrame {
 	}
 
 	private void pedido(String id, ControladorClie datos) {
-		// TODO Auto-generated method stub
+		
 		VPedido ped = new VPedido(this, true, id, datos);
 		ped.setVisible(true);
 	}

@@ -1,0 +1,18 @@
+cambios: 
+
+	- VPedido
+		- Modi metodo pedido Comercio 
+	
+	- VComercio 
+		-  historicoComSum ("probar")
+		-  stock com (Falta select)
+		- Todos los botones (funcionales)
+		
+		
+	- Stock 
+		- Metodo para Comercio 
+		- Array para comercio 
+		- (Necesita Boton Atras )
+	-ControlComImplem
+		- HistoricoCOnCum
+		-Consulta "mostrar Pedidos Sumin"

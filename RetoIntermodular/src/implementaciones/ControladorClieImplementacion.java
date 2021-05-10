@@ -26,12 +26,12 @@ public class ControladorClieImplementacion implements ControladorClie {
 	// Sentencias
 
 	// modificado select de cliente
-	private final String comprobarLogin = "SELECT * FROM cliente WHERE id_clie = ? and clave = ?";
+	private final String comprobarLogin = "SELECT clave FROM cliente WHERE id_clie = ? and clave = ?";
 	private final String mostrarPedidos = "SELECT  comercio.nombre_com, comercio.id_com, producto.id_prod, producto.nombre, historico_c.cant, historico_c.fecha FROM comercio, producto, historico_c WHERE comercio.id_com = historico_c.id_com AND producto.id_prod = historico_c.id_prod AND historico_c.id_clie = ?";
 	private final String hacerPedido = "CALL `add_pedido_com`(?,?,?,?,?)";
 	private final String listarProductos = "SELECT * FROM producto";
-	private final String listarVendedores = "SELECT comercio.id_com,comercio.nombre_com, comercio.tipo_com FROM  comercio,stock_c WHERE stock_com.id_com = comercio.id_com AND stock_com.id_prod = ?";
-	private final String leerCant = "SELECT stock_com.cant FROM stock WHERE stock_com.id_com = ? AND stock_com.id_prod = ?";
+	private final String listarVendedores = "SELECT comercio.id_com,comercio.nombre_com, comercio.tipo_com FROM  comercio,stock_com WHERE stock_com.id_com = comercio.id_com AND stock_com.id_prod = ?";
+	private final String leerCant = "SELECT stock_com.cant FROM stock_com WHERE stock_com.id_com = ? AND stock_com.id_prod = ?";
 
 	public ControladorClieImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.config");
@@ -159,6 +159,8 @@ public class ControladorClieImplementacion implements ControladorClie {
 			}
 
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
+
 			throw new ReadException(e.getMessage());
 		}
 
@@ -218,7 +220,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 	}
 
 	@Override
-	public Collection<Comercio> listarVendedor() throws ReadException {
+	public Collection<Comercio> listarVendedor(String id_prod) throws ReadException {
 		// TODO Auto-generated method stub
 		Comercio com;
 		Collection<Comercio> comercios = new HashSet<>();
@@ -226,14 +228,16 @@ public class ControladorClieImplementacion implements ControladorClie {
 		this.openConnection();
 		try {
 			stmt = con.prepareStatement(listarVendedores);
+			stmt.setString(1, id_prod);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				com = new Comercio();
 				com.setCifCom(rs.getString("comercio.id_com"));
 				com.setNombreCom(rs.getString("comercio.nombre_com"));
-				com.setTipoCom(rs.getString("comercio.tipo"));
+				com.setTipoCom(rs.getString("comercio.tipo_com"));
 				com.setClaveCom(null);
 				comercios.add(com);
+				
 			}
 
 		} catch (Exception e) {
