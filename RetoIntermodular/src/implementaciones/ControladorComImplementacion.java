@@ -1,10 +1,12 @@
 package implementaciones;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.ResourceBundle;
@@ -24,7 +26,12 @@ public class ControladorComImplementacion implements ControladorCom {
 
 	// Sentencias
 	private final String comprobarLogin = "EXISTS(SELECT clave FROM clientes WHERE id_clie = ? and clave = ?)";
-	final String querySelectStock = "SELECT stock_sum.id_prod, stock_sum.cant, producto.nombre FROM stock_sum,producto WHERE producto.id_prod=stock_sum.id_prod AND stock_sum.id_sum=? ";
+	private final String querySelectStock = "SELECT stock_sum.id_prod, stock_sum.cant, producto.nombre FROM stock_sum,producto WHERE producto.id_prod=stock_sum.id_prod AND stock_sum.id_sum=? ";
+	private final String listarProductos = "SELECT * FROM producto";
+	private final String hacerPedido = "CALL `add_pedido_com`(?,?,?,?,?)";
+	private final String listarVendedores = "SELECT suministrador.id_sum, suministrador.nombre_sum FROM  suministrador,stock_sum WHERE stock_sum.id_sum = suministrador.id_sum AND stock_sum.id_prod = ?";
+	private final String leerCant = "SELECT stock_sum.cant FROM stock_sum WHERE stock_sum.id_sum = ? AND stock_sum.id_prod = ?";
+
 
 	public ControladorComImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.config");
@@ -82,6 +89,13 @@ public class ControladorComImplementacion implements ControladorCom {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
+		}
 
 		return encontrado;
 	}
@@ -98,10 +112,149 @@ public class ControladorComImplementacion implements ControladorCom {
 
 	}
 
-	@Override
-	public void crearPedidoComSum(String id_comp, String id_ven, String id_prod, int cant) throws CreateException {
-		// TODO Auto-generated method stub
 
+	@Override
+	public Collection<Producto> listarProd() throws ReadException {
+		// TODO Auto-generated method stub
+		Producto prod;
+		Collection<Producto> producto = new HashSet<>();
+		ResultSet rs = null;
+		this.openConnection();
+		try {
+			stmt = con.prepareStatement(listarProductos);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				prod = new Producto();
+				prod.setId(rs.getString("id_prod"));
+				prod.setNomProducto(rs.getString("nombre"));
+				producto.add(prod);
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+
+			throw new ReadException(e.getMessage());
+		}
+
+		try {
+			this.closeConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
+		}
+		return producto;
+	}
+
+	@Override
+	public Collection<Suministrador> listarVendedor(String id_prod) throws ReadException {
+		// TODO Auto-generated method stub
+		Suministrador sum;
+		Collection<Suministrador> suministradores = new HashSet<>();
+		ResultSet rs = null;
+		this.openConnection();
+		try {
+			stmt = con.prepareStatement(listarVendedores);
+			stmt.setString(1, id_prod);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				sum = new Suministrador();
+				sum.setCifSum(rs.getString("suministrador.id_sum"));
+				sum.setNombreSum(rs.getString("suministrador.nombre_sum"));
+				sum.setClaveSum(null);
+				suministradores.add(sum);
+				
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+
+			throw new ReadException(e.getMessage());
+		}
+
+		try {
+			this.closeConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
+		}
+		return suministradores;
+	}
+
+	@Override
+	public Integer listarCant(String id_sum, String id_prod) throws ReadException {
+		// TODO Auto-generated method stub
+		int cant = 0;
+
+		ResultSet rs = null;
+		this.openConnection();
+		try {
+			stmt = con.prepareStatement(leerCant);
+			stmt.setString(1, id_sum);
+			stmt.setString(2, id_prod);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				cant = rs.getInt("stock_sum.cant");
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+
+			throw new ReadException(e.getMessage());
+		}
+
+		try {
+			this.closeConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
+		}
+		return cant;
+	}
+
+	
+	@Override
+	public void crearPedidoComSum(String id_com, String id_ven, String id_prod, int cant) throws CreateException {
+		// TODO Auto-generated method stub
+		this.openConnection();
+		try {
+			stmt = con.prepareStatement(hacerPedido);
+			stmt.setString(1, id_com);
+			stmt.setString(2, id_ven);
+			stmt.setString(3, id_prod);
+			stmt.setInt(4, cant);
+			stmt.setDate(5, Date.valueOf(LocalDate.now()));
+
+			stmt.executeUpdate();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+
+			throw new CreateException(e.getMessage());
+		}
+		try {
+			this.closeConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -112,7 +265,7 @@ public class ControladorComImplementacion implements ControladorCom {
 
 	@Override
 	public Collection<Stock> stockCom(String id) {
-
+		ResultSet rs = null;
 		Collection<Stock> sto = new HashSet<Stock>();
 		openConnection();
 		try {
@@ -141,6 +294,12 @@ public class ControladorComImplementacion implements ControladorCom {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
 		}
 		return sto;
 

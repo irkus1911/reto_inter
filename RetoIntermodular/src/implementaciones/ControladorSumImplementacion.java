@@ -47,6 +47,7 @@ public class ControladorSumImplementacion implements ControladorSum {
 
 	public Collection<Stock> stockSum(String id) {
 		// TODO Auto-generated method stub
+		ResultSet rs = null;
 		Collection<Stock> sto=new HashSet<Stock>();
 		openConnection();
 		try {
@@ -77,6 +78,13 @@ public class ControladorSumImplementacion implements ControladorSum {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
 		}
 		return sto;
 	}
@@ -149,6 +157,7 @@ public class ControladorSumImplementacion implements ControladorSum {
 	}
 	private Collection<Pedido> listarPedidos(String id){
 		Collection <Pedido> ped=new HashSet <Pedido>();
+		ResultSet rs = null;
 		openConnection();
 		Pedido pedi;  
 		try {
@@ -175,6 +184,12 @@ public class ControladorSumImplementacion implements ControladorSum {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
 		}
 		return ped;
 	}

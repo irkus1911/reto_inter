@@ -32,32 +32,29 @@ public class VHistorico extends JDialog {
 		this.setModal(b);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
-		{
+		
 			JLabel lblNombreHistorico = new JLabel("Historico de ...");
 			lblNombreHistorico.setBounds(89, 11, 200, 39);
 			getContentPane().add(lblNombreHistorico);
-		}
-		{
-			tableHistorico = new JTable();
-			tableHistorico.setBounds(56, 76, 268, 90);
-			getContentPane().add(tableHistorico);
-		}
-		{
+			
 			JButton btnAtras = new JButton("Atras");
-			btnAtras.setBounds(10, 227, 89, 23);
+			btnAtras.setBounds(172, 227, 89, 23);
 			getContentPane().add(btnAtras);
-		}
+			
 
 		String[] columnas = { "VENDEDOR", "PRODUCTO", "CANTIDAD", "FECHA" };
 		try {
 			Collection<Historico> historico = datos.historicoClieCom(id);
+			
 			tableHistorico = new JTable(cargarHistoricoClie(datos, historico), columnas);
+			tableHistorico.setBounds(36, 65, 347, 132);
+			getContentPane().add(tableHistorico);
 		} catch (ReadException e) {
 			JOptionPane.showMessageDialog(this, "Error al intentar listar datos de la base de datos",
 					"Error lectura BBDD", JOptionPane.ERROR_MESSAGE);
 		}
-		tableHistorico.setBounds(24, 194, 414, 168);
-
+		
+	
 	}
 
 	/*public VHistorico(ActionListener actionListener, boolean b, String id, ControladorCom datos) throws ReadException {

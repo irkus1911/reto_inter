@@ -27,11 +27,11 @@ public class ControladorClieImplementacion implements ControladorClie {
 
 	// modificado select de cliente
 	private final String comprobarLogin = "SELECT clave FROM cliente WHERE id_clie = ? and clave = ?";
-	private final String mostrarPedidos = "SELECT comercio.id_com, comercio.nombre_com, producto.nombre, historico_c.fecha, historico_c.cant FROM comercio, producto, historico_c WHERE comercio.id_com = historico_c.id_com AND producto.id_prod = historico_c.id_prod AND historico_c.id_clie = ?";
+	private final String mostrarPedidos = "SELECT  comercio.nombre_com, comercio.id_com, producto.id_prod, producto.nombre, historico_c.cant, historico_c.fecha FROM comercio, producto, historico_c WHERE comercio.id_com = historico_c.id_com AND producto.id_prod = historico_c.id_prod AND historico_c.id_clie = ?";
 	private final String hacerPedido = "CALL `add_pedido_com`(?,?,?,?,?)";
 	private final String listarProductos = "SELECT * FROM producto";
-	private final String listarVendedores = "SELECT comercio.id_com,comercio.nombre_com, comercio.tipo_com FROM  comercio,stock_c WHERE stock_com.id_com = comercio.id_com AND stock_com.id_prod = ?";
-	private final String leerCant = "SELECT stock_com.cant FROM stock WHERE stock_com.id_com = ? AND stock_com.id_prod = ?";
+	private final String listarVendedores = "SELECT comercio.id_com,comercio.nombre_com, comercio.tipo_com FROM  comercio,stock_com WHERE stock_com.id_com = comercio.id_com AND stock_com.id_prod = ?";
+	private final String leerCant = "SELECT stock_com.cant FROM stock_com WHERE stock_com.id_com = ? AND stock_com.id_prod = ?";
 
 	public ControladorClieImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.config");
@@ -98,14 +98,16 @@ public class ControladorClieImplementacion implements ControladorClie {
 		try {
 			stmt = con.prepareStatement(mostrarPedidos);
 			stmt.setString(1, id);
-
+			System.out.println("query");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
+				System.out.println("while");
 				hist = new Historico();
 				hist.setIdComprador(id);
+				hist.setComprador("");
 				hist.setIdVendedor(rs.getString("comercio.id_com"));
 				hist.setVendedor(rs.getString("comercio.nombre_com"));
-				hist.setProducto(rs.getString("producto.id_prod"));
+				hist.setIdProd(rs.getString("producto.id_prod"));
 				hist.setProducto(rs.getString("producto.nombre"));
 				hist.setCant(rs.getInt("historico_c.cant"));
 				hist.setFecha(rs.getDate("historico_c.fecha").toLocalDate());
@@ -123,7 +125,14 @@ public class ControladorClieImplementacion implements ControladorClie {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
 		}
+		
 		return historico;
 	}
 
@@ -160,6 +169,12 @@ public class ControladorClieImplementacion implements ControladorClie {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
 		}
 
 		return encontrado;
@@ -194,12 +209,18 @@ public class ControladorClieImplementacion implements ControladorClie {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
 		}
 		return producto;
 	}
 
 	@Override
-	public Collection<Comercio> listarVendedor() throws ReadException {
+	public Collection<Comercio> listarVendedor(String id_prod) throws ReadException {
 		// TODO Auto-generated method stub
 		Comercio com;
 		Collection<Comercio> comercios = new HashSet<>();
@@ -207,14 +228,16 @@ public class ControladorClieImplementacion implements ControladorClie {
 		this.openConnection();
 		try {
 			stmt = con.prepareStatement(listarVendedores);
+			stmt.setString(1, id_prod);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				com = new Comercio();
 				com.setCifCom(rs.getString("comercio.id_com"));
 				com.setNombreCom(rs.getString("comercio.nombre_com"));
-				com.setTipoCom(rs.getString("comercio.tipo"));
+				com.setTipoCom(rs.getString("comercio.tipo_com"));
 				com.setClaveCom(null);
 				comercios.add(com);
+				
 			}
 
 		} catch (Exception e) {
@@ -228,6 +251,12 @@ public class ControladorClieImplementacion implements ControladorClie {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
 		}
 		return comercios;
 	}
@@ -259,6 +288,12 @@ public class ControladorClieImplementacion implements ControladorClie {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
 		}
 		return cant;
 	}
