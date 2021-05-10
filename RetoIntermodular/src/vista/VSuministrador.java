@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
+import logica.*;
+import modelo.*;
+
 public class VSuministrador extends JFrame {
 
 	private JPanel contentPane;

@@ -1,8 +1,11 @@
 package app;
 
 import java.sql.*;
+
+import implementaciones.*;
+import logica.*;
 import modelo.*;
-import vista.VBienvenida;
+import vista.*;
 
 
 public class Main {

@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 
+import logica.*;
+import modelo.*;
+
 public class VStock extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

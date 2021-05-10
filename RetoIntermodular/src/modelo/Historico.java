@@ -2,7 +2,7 @@ package modelo;
 
 public class Historico extends Compra{
 
-	private String vendedor;
+	private String vendedor,comprador;
 	private String producto;
 	
 	// Para facilitar la muestra de datos a los Clientes, se 
@@ -17,5 +17,11 @@ public class Historico extends Compra{
 	}
 	public void setProducto(String producto) {
 		this.producto = producto;
+	}
+	public String getComprador() {
+		return comprador;
+	}
+	public void setComprador(String comprador) {
+		this.comprador = comprador;
 	}
 }

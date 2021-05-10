@@ -10,6 +10,9 @@ import javax.swing.JButton;
 import javax.swing.JSpinner;
 import javax.swing.JComboBox;
 
+import logica.*;
+import modelo.*;
+
 public class VAdministrador extends JFrame {
 
 	private JPanel contentPane;

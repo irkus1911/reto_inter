@@ -11,6 +11,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
+import logica.*;
+import modelo.*;
+
 public class VAlta extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
