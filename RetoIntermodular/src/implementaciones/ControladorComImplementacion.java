@@ -31,7 +31,8 @@ public class ControladorComImplementacion implements ControladorCom {
 	private final String hacerPedido = "CALL `add_pedido_com`(?,?,?,?,?)";
 	private final String listarVendedores = "SELECT suministrador.id_sum, suministrador.nombre_sum FROM  suministrador,stock_sum WHERE stock_sum.id_sum = suministrador.id_sum AND stock_sum.id_prod = ?";
 	private final String leerCant = "SELECT stock_sum.cant FROM stock_sum WHERE stock_sum.id_sum = ? AND stock_sum.id_prod = ?";
-
+	private final String mostrarPedidosSumin = "SELECT  suministrador.nombre_com, suministrador.id_com, suministrador.id_prod, suministrador.nombre, historico_s.cant, historico_s.fecha "
+			+ "FROM comercio, producto, historico_s WHERE comercio.id_com = historico_s.id_com AND producto.id_prod = historico_s.id_prod AND historico_s.id_sum= ?";
 
 	public ControladorComImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.config");
@@ -106,11 +107,7 @@ public class ControladorComImplementacion implements ControladorCom {
 		return null;
 	}
 
-	@Override
-	public void validarPedidoCom() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 
 	@Override
@@ -258,9 +255,52 @@ public class ControladorComImplementacion implements ControladorCom {
 	}
 
 	@Override
-	public Collection<Historico> historicoComSum(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Historico> historicoComSum(String id) throws ReadException {
+		
+		Historico hist;
+		Collection<Historico> historico = new HashSet<Historico>();
+		ResultSet rs = null;
+
+		this.openConnection();
+		try {
+			stmt = con.prepareStatement(mostrarPedidosSumin);
+			stmt.setString(1, id);
+			System.out.println("query");
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				System.out.println("while");
+				hist = new Historico();
+				hist.setIdComprador(id);
+				hist.setComprador("");
+				hist.setIdVendedor(rs.getString("comercio.id_com"));
+				hist.setVendedor(rs.getString("comercio.nombre_com"));
+				hist.setIdProd(rs.getString("producto.id_prod"));
+				hist.setProducto(rs.getString("producto.nombre"));
+				hist.setCant(rs.getInt("historico_c.cant"));
+				hist.setFecha(rs.getDate("historico_c.fecha").toLocalDate());
+				historico.add(hist);
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+
+			throw new ReadException(e.getMessage());
+		}
+
+		try {
+			this.closeConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				System.out.println("Error en cierre del ResultSet");
+			}
+		}
+		
+		return historico;
 	}
 
 	@Override
@@ -303,6 +343,18 @@ public class ControladorComImplementacion implements ControladorCom {
 		}
 		return sto;
 
+	}
+
+	@Override
+	public void validarPedidoCom(String id, String id_com, String id_prod, LocalDate fecha) {
+		
+		
+	}
+
+	@Override
+	public Collection<Pedido> listarPed(String id) throws ReadException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -78,28 +78,19 @@ public class VSuministrador extends JFrame implements ActionListener{
 		if(e.getSource().equals(btnAñadirProducto)) {
 			VProducto ven=new VProducto();
 			ven.setVisible(true);
-		
-			
+
 		}
 		if(e.getSource().equals(btnCerrarSesion)) {
-		
 			this.dispose();
-		
 		}
 		if(e.getSource().equals(btnHistorico)) {
-			
-//			try {
-//				VHistorico ven;
-//				ven = new VHistorico(this, true, id_sum, datos);
-//				ven.setVisible(true);
-//			} catch (ReadException e1) {
-//				JOptionPane.showMessageDialog(this, "Error al intentar listar datos de la base de datos",
-//						"Error lectura BBDD", JOptionPane.ERROR_MESSAGE);
-//			
-//			}
-			
-		
-			
+			try {
+				consultarPedido(id_sum,datos);
+			} catch (ReadException e1) {
+				JOptionPane.showMessageDialog(btnCerrarSesion,
+						"Error al intentar ver el historico de pedidos", "Error lectura BBDD",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		if(e.getSource().equals(btnRevisarStock)) {
 			VStock ven=new VStock(this,true,id_sum,datos);
@@ -108,9 +99,13 @@ public class VSuministrador extends JFrame implements ActionListener{
 			
 		}
 		if(e.getSource().equals(btnValidarPedidos)) {
-			VValidar ven=new VValidar();
+			VValidar ven=new VValidar(this, true, id_sum, datos);
 			ven.setVisible(true);
 		
 		}
+	}
+	private void consultarPedido(String id, ControladorSum datos) throws ReadException {
+		VHistorico hist = new VHistorico(this, true, id, datos);
+		hist.setVisible(true);
 	}
 }

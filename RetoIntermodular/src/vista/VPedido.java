@@ -32,20 +32,12 @@ public class VPedido extends JDialog {
 	private JSpinner spinnerCant;
 	private JButton btnEnviar, btnAtras;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		try {
-//			VPedido dialog = new VPedido();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	
 
 	// VPedido para Clientes
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public VPedido(VCliente clie, boolean b, String id, ControladorClie datos) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
@@ -73,7 +65,7 @@ public class VPedido extends JDialog {
 		comboVendedor.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				// TODO Auto-generated method stub
+				
 				if (comboVendedor.getSelectedIndex() != -1) {
 					id_com = comboVendedor.getSelectedItem().toString().substring(0,
 							comboVendedor.getSelectedItem().toString().indexOf(" - "));
@@ -137,7 +129,7 @@ public class VPedido extends JDialog {
 		comboVendedor.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				// TODO Auto-generated method stub
+				
 				if (comboVendedor.getSelectedIndex() != -1) {
 					id_sum = comboVendedor.getSelectedItem().toString().substring(0,
 							comboVendedor.getSelectedItem().toString().indexOf(" - "));
@@ -187,7 +179,7 @@ public class VPedido extends JDialog {
 	}
 
 	private void cargarVendedor(String id_prod, ControladorClie datos) {
-		// TODO Auto-generated method stub
+		
 		try {
 			Collection<Comercio> comercios = datos.listarVendedor(id_prod);
 			for (Comercio com : comercios) {
@@ -195,7 +187,7 @@ public class VPedido extends JDialog {
 			}
 			comboVendedor.setSelectedIndex(-1);
 		} catch (ReadException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
