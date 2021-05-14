@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 
 import modelo.*;
 import logica.*;
+import logica.exception.CreateException;
 public class VProducto extends JDialog {
 	private JTextField texIdProducto;
 	private JTextField textNomProducto;

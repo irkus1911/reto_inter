@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import logica.*;
+import logica.exception.CreateException;
 import modelo.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

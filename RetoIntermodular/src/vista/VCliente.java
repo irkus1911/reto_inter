@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import logica.*;
+import logica.exception.ReadException;
 import modelo.*;
 
 import javax.swing.JButton;
@@ -92,7 +93,8 @@ public class VCliente extends JFrame {
 		
 		VPedido ped = new VPedido(this, true, id, datos);
 		ped.setVisible(true);
-		ped.setLocationRelativeTo(null);
+		ped.setLocationRelativeTo(this);
+		
 	}
 
 }

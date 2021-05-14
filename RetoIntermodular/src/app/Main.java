@@ -1,14 +1,11 @@
 package app;
 
-import implementaciones.ControladorAdminImplementacion;
-import implementaciones.ControladorClieImplementacion;
-import implementaciones.ControladorComImplementacion;
-import implementaciones.ControladorSumImplementacion;
-import logica.ControladorAdmin;
-import logica.ControladorClie;
-import logica.ControladorCom;
-import logica.ControladorSum;
-import vista.VBienvenida;
+import java.sql.*;
+
+import implementaciones.*;
+import logica.*;
+import modelo.*;
+import vista.*;
 
 
 public class Main {
@@ -17,6 +14,7 @@ public class Main {
 		
 		VBienvenida vent = new VBienvenida();
 		vent.setVisible(true);
+		vent.setLocationRelativeTo(null);
 	}
 	
 	public static ControladorClie datosClie() {

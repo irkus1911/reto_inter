@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import logica.*;
+import logica.exception.ReadException;
 import modelo.*;
 
 public class VStock extends JDialog {
@@ -27,6 +28,8 @@ public class VStock extends JDialog {
 	// STOCK SUMINISTRADOR
 	public VStock(VSuministrador vSuministrador, boolean b, String id_sum, ControladorSum datos) {
 
+		this.setModal(b);
+		
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -60,15 +63,10 @@ public class VStock extends JDialog {
 	}
 
 	// STOCK COMERCIO
-
 	public VStock(VComercio vComercio, boolean b, String id_com, ControladorCom datos) {
-
-		/*
-		if(hasFocus()) {
-			System.out.println("si_STOCk");
-		//	this.enable();
-		}
-		*/
+	
+		this.setModal(b);
+		
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

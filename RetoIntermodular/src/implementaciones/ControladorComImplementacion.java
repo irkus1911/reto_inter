@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import logica.*;
+import logica.exception.*;
+
 import modelo.*;
 
 public class ControladorComImplementacion implements ControladorCom {
@@ -23,9 +25,8 @@ public class ControladorComImplementacion implements ControladorCom {
 	private PreparedStatement stmt;
 	private ResultSet rs;
 	private String admin;
-	// private InputStream inputStream;
-	private ResourceBundle configFile;
-	private String user, url, pass;
+	private ConnectionOpenClose conection = new ConnectionOpenClose(); 
+	
 
 	// Sentencias
 	private final String comprobarLogin = "SELECT clave FROM comercio WHERE id_com = ? and clave = ?";
@@ -39,19 +40,16 @@ public class ControladorComImplementacion implements ControladorCom {
 	private String mostrarPedidosHistClie = "SELECT  cliente.nombre_clie, cliente.id_clie, producto.id_prod, producto.nombre, historico_c.cant, historico_c.fecha FROM cliente, producto, historico_c WHERE cliente.id_clie = historico_c.id_clie AND producto.id_prod = historico_c.id_prod AND historico_c.id_com = ?";
 	private final String mostrarPedidosValidar = "SELECT cliente.id_clie, producto.id_prod, pedidos_c.cant, pedidos_c.fecha, pedidos_c.estado FROM cliente, producto, pedidos_c WHERE cliente.id_clie = pedidos_c.id_clie AND producto.id_prod = pedidos_c.id_prod AND pedidos_c.id_com = ? ";
 
-	public ControladorComImplementacion() {
-		this.configFile = ResourceBundle.getBundle("modelo.config");
-		this.url = this.configFile.getString("URL");
-		this.user = this.configFile.getString("USER");
-		this.pass = this.configFile.getString("PASSWORD");
-	}
-
 	@Override
-	public boolean login(String id, String clave) throws ReadException {
+	public boolean login(String id, String clave) throws ReadException, ConnectException {
 
 		boolean encontrado = false;
 		ResultSet rs = null;
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (ConnectException e) {
+		throw new ConnectException(e.getMessage());
+		}
 
 		try {
 			stmt = con.prepareStatement(comprobarLogin);
@@ -66,22 +64,22 @@ public class ControladorComImplementacion implements ControladorCom {
 		}
 
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			conection.closeConnection(stmt, con);
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
 		}
 		if (rs != null) {
 			try {
 				rs.close();
-			} catch (SQLException ex) {
-				System.out.println("Error en cierre del ResultSet");
+			} catch (Exception e) {
+				throw new ReadException(e.getMessage());
 			}
 		}
 		return encontrado;
 	}
 
 	@Override
-	public Collection<Historico> historicoClieCom(String id) throws ReadException {
+	public Collection<Historico> historicoClieCom(String id) throws ReadException, ConnectException {
 
 		Historico hist;
 		Collection<Historico> historico = new HashSet<Historico>();
@@ -93,15 +91,17 @@ public class ControladorComImplementacion implements ControladorCom {
 			admin = " AND cliente.id_clie != 'ADMIN'";
 		}
 		mostrarPedidosHistClie += admin;
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
+		}
 
 		try {
 			stmt = con.prepareStatement(mostrarPedidosHistClie);
 			stmt.setString(1, id);
-			System.out.println("query");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
-				System.out.println("while");
 				hist = new Historico();
 				hist.setIdComprador(rs.getString("cliente.id_clie"));
 				hist.setComprador(rs.getString("cliente.nombre_clie"));
@@ -118,28 +118,32 @@ public class ControladorComImplementacion implements ControladorCom {
 			throw new ReadException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			conection.closeConnection(stmt, con);
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
 		}
 		if (rs != null) {
 			try {
 				rs.close();
-			} catch (SQLException ex) {
-				System.out.println("Error en cierre del ResultSet");
+			} catch (Exception e) {
+				throw new ReadException(e.getMessage());
 			}
 		}
 		return historico;
 	}
 
 	@Override
-	public Collection<Producto> listarProd() throws ReadException {
+	public Collection<Producto> listarProd() throws ReadException, ConnectException {
 		
 		Producto prod;
 		Collection<Producto> producto = new HashSet<>();
 		ResultSet rs = null;
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
-
+	
+			try {
+				con = conection.openConnection();
+			} catch (ConnectException e) {
+				throw new ConnectException(e.getMessage());
+			}
 		try {
 			stmt = con.prepareStatement(listarProductos);
 			rs = stmt.executeQuery();
@@ -154,22 +158,22 @@ public class ControladorComImplementacion implements ControladorCom {
 		}
 
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			conection.closeConnection(stmt, con);
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
 		}
 		if (rs != null) {
 			try {
 				rs.close();
-			} catch (SQLException ex) {
-				System.out.println("Error en cierre del ResultSet");
+			} catch (Exception e) {
+				throw new ReadException(e.getMessage());
 			}
 		}
 		return producto;
 	}
 
 	@Override
-	public Collection<Suministrador> listarVendedor(String id_prod, String id_sum) throws ReadException {
+	public Collection<Suministrador> listarVendedor(String id_prod, String id_sum) throws ReadException, ConnectException {
 		Suministrador sum;
 		Collection<Suministrador> suministradores = new HashSet<>();
 		ResultSet rs = null;
@@ -182,7 +186,12 @@ public class ControladorComImplementacion implements ControladorCom {
 		}
 		listarVendedores += admin;
 
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
+		}
+		
 		try {
 			stmt = con.prepareStatement(listarVendedores);
 			stmt.setString(1, id_prod);
@@ -198,26 +207,30 @@ public class ControladorComImplementacion implements ControladorCom {
 			throw new ReadException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			conection.closeConnection(stmt, con);
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
 		}
 		if (rs != null) {
 			try {
 				rs.close();
-			} catch (SQLException ex) {
-				System.out.println("Error en cierre del ResultSet");
+			} catch (Exception e) {
+				throw new ReadException(e.getMessage());
 			}
 		}
 		return suministradores;
 	}
 
 	@Override
-	public Integer listarCant(String id_sum, String id_prod) throws ReadException {
+	public Integer listarCant(String id_sum, String id_prod) throws ReadException, ConnectException {
 		int cant = 0;
 
 		ResultSet rs = null;
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
+		}
 
 		try {
 			stmt = con.prepareStatement(leerCant);
@@ -231,24 +244,28 @@ public class ControladorComImplementacion implements ControladorCom {
 			throw new ReadException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			conection.closeConnection(stmt, con);
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
 		}
 		if (rs != null) {
 			try {
 				rs.close();
-			} catch (SQLException ex) {
-				System.out.println("Error en cierre del ResultSet");
+			} catch (Exception e) {
+				throw new ReadException(e.getMessage());
 			}
 		}
 		return cant;
 	}
 
 	@Override
-	public void crearPedidoComSum(String id_com, String id_ven, String id_prod, int cant) throws CreateException {
+	public void crearPedidoComSum(String id_com, String id_ven, String id_prod, int cant) throws CreateException, ConnectException {
 
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
+		}
 		try {
 			stmt = con.prepareStatement(hacerPedido);
 			stmt.setString(1, id_com);
@@ -263,14 +280,14 @@ public class ControladorComImplementacion implements ControladorCom {
 			throw new CreateException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			conection.closeConnection(stmt, con);
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
 		}
 	}
 
 	@Override
-	public Collection<Historico> historicoComSum(String id) throws ReadException {
+	public Collection<Historico> historicoComSum(String id) throws ReadException, ConnectException {
 
 		Historico hist;
 		Collection<Historico> historico = new HashSet<Historico>();
@@ -282,14 +299,18 @@ public class ControladorComImplementacion implements ControladorCom {
 			admin = " AND suministrador.id_sum != 'ADMIN'";
 		}
 		mostrarPedidosHistSum += admin;
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
+		}
 		try {
 			stmt = con.prepareStatement(mostrarPedidosHistSum);
 			stmt.setString(1, id);
-			System.out.println("query");
+			
 			rs = stmt.executeQuery();
 			while (rs.next()) {
-				System.out.println("while");
+				
 				hist = new Historico();
 				hist.setIdComprador(id);
 				hist.setComprador("");
@@ -307,15 +328,15 @@ public class ControladorComImplementacion implements ControladorCom {
 		}
 
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			conection.closeConnection(stmt, con);
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
 		}
 		if (rs != null) {
 			try {
 				rs.close();
-			} catch (SQLException ex) {
-				System.out.println("Error en cierre del ResultSet");
+			} catch (Exception e) {
+				throw new ReadException(e.getMessage());
 			}
 		}
 
@@ -323,10 +344,15 @@ public class ControladorComImplementacion implements ControladorCom {
 	}
 
 	@Override
-	public Collection<Stock> stockCom(String id) {
+	public Collection<Stock> stockCom(String id) throws ReadException, ConnectException{
 		ResultSet rs = null;
 		Collection<Stock> sto = new HashSet<Stock>();
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		
+		try {
+			con = conection.openConnection();
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
+		}
 
 		try {
 			Stock stock;
@@ -343,29 +369,32 @@ public class ControladorComImplementacion implements ControladorCom {
 				stock.setNomProducto(rs.getString("producto.nombre"));
 				sto.add(stock);
 			}
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+		} catch (Exception e) {
+			throw new ReadException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			conection.closeConnection(stmt, con);
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
 		}
 		if (rs != null) {
 			try {
 				rs.close();
-			} catch (SQLException ex) {
-				System.out.println("Error en cierre del ResultSet");
+			} catch (Exception e) {
+				throw new ReadException(e.getMessage());
 			}
 		}
 		return sto;
 	}
 
 	@Override
-	public void validarPedidoCom(String id_clie, String id, String id_prod, LocalDateTime fecha) throws UpdateException {
+	public void validarPedidoCom(String id_clie, String id, String id_prod, LocalDateTime fecha) throws UpdateException, ConnectException {
 		
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
+		}
 
 		try {
 
@@ -376,31 +405,34 @@ public class ControladorComImplementacion implements ControladorCom {
 			stmt.setTimestamp(4, Timestamp.valueOf(fecha));
 			stmt.executeUpdate();
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			throw new UpdateException(e.getMessage());
 		}
 
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			conection.closeConnection(stmt, con);
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
 		}
 	}
 
 	@Override
-	public Collection<Pedido> listarPed(String id) throws ReadException {
+	public Collection<Pedido> listarPed(String id) throws ReadException, ConnectException {
 		Pedido ped;
 		Collection<Pedido> pedidos = new HashSet<Pedido>();
 		ResultSet rs = null;
 
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
+		}
+		
 		try {
 			stmt = con.prepareStatement(mostrarPedidosValidar);
 			stmt.setString(1, id);
-			System.out.println("query");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
-				System.out.println("while");
 				ped = new Pedido();
 				ped.setIdComprador(rs.getString("cliente.id_clie"));
 				ped.setIdVendedor(id);
@@ -414,15 +446,15 @@ public class ControladorComImplementacion implements ControladorCom {
 			throw new ReadException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			conection.closeConnection(stmt, con);
+		} catch (ConnectException e) {
+			throw new ConnectException(e.getMessage());
 		}
 		if (rs != null) {
 			try {
 				rs.close();
-			} catch (SQLException ex) {
-				System.out.println("Error en cierre del ResultSet");
+			} catch (Exception e) {
+				throw new ReadException(e.getMessage());
 			}
 		}
 		return pedidos;

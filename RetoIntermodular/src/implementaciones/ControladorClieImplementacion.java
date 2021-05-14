@@ -14,6 +14,9 @@ import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import logica.*;
+import logica.exception.ConnectException;
+import logica.exception.CreateException;
+import logica.exception.ReadException;
 import modelo.*;
 
 public class ControladorClieImplementacion implements ControladorClie {
@@ -21,10 +24,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 	// Atributos
 	private Connection con;
 	private PreparedStatement stmt;
-	
-	// private InputStream inputStream;
-	private ResourceBundle configFile;
-	private String user, url, pass;
+	private ConnectionOpenClose conection = new ConnectionOpenClose(); 
 	private String admin;
 	
 	// Sentencias
@@ -35,17 +35,17 @@ public class ControladorClieImplementacion implements ControladorClie {
 	private String listarVendedores = "SELECT comercio.id_com,comercio.nombre_com, comercio.tipo_com FROM  comercio, stock_com WHERE stock_com.id_com = comercio.id_com AND stock_com.id_prod = ? ";
 	private final String leerCant = "SELECT stock_com.cant FROM stock_com WHERE stock_com.id_com = ? AND stock_com.id_prod = ? ";
 
-	public ControladorClieImplementacion() {
-		this.configFile = ResourceBundle.getBundle("modelo.config");
-		this.url = this.configFile.getString("URL");
-		this.user = this.configFile.getString("USER");
-		this.pass = this.configFile.getString("PASSWORD");
-	}
+	
 
 	@Override
 	public void crearPedidoClieCom(String id_clie, String id_com, String id_prod, int cant) throws CreateException {
 
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
 		try {
 			stmt = con.prepareStatement(hacerPedido);
 			stmt.setString(1, id_clie);
@@ -61,7 +61,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 			throw new CreateException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
+			conection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -79,7 +79,11 @@ public class ControladorClieImplementacion implements ControladorClie {
 			admin = " AND comercio.id_com != 'ADMIN'";
 		}
 		mostrarPedidos += admin;
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 		try {
 			stmt = con.prepareStatement(mostrarPedidos);
 			stmt.setString(1, id);
@@ -103,7 +107,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 			throw new ReadException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
+			conection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -121,7 +125,12 @@ public class ControladorClieImplementacion implements ControladorClie {
 	public boolean login(String id, String clave) throws ReadException {
 		boolean encontrado = false;
 		ResultSet rs = null;
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (SQLException e1) {
+			
+			e1.printStackTrace();
+		}
 		
 		try {
 
@@ -140,7 +149,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 			throw new ReadException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
+			conection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -155,12 +164,17 @@ public class ControladorClieImplementacion implements ControladorClie {
 	}
 
 	@Override
-	public Collection<Producto> listarProd() throws ReadException {
-		// TODO Auto-generated method stub
+	public Collection<Producto> listarProd() throws ConnectException, ReadException {
+
 		Producto prod;
 		Collection<Producto> producto = new HashSet<>();
 		ResultSet rs = null;
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (Exception e1) {
+			throw new ConnectException(e1.getMessage());
+			// e1.printStackTrace();
+		}
 		try {
 			stmt = con.prepareStatement(listarProductos);
 			rs = stmt.executeQuery();
@@ -175,7 +189,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 			throw new ReadException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
+			conection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -183,7 +197,8 @@ public class ControladorClieImplementacion implements ControladorClie {
 			try {
 				rs.close();
 			} catch (SQLException ex) {
-				System.out.println("Error en cierre del ResultSet");
+				throw new ReadException(ex.getMessage());
+				//System.out.println("Error en cierre del ResultSet");
 			}
 		}
 		return producto;
@@ -201,7 +216,12 @@ public class ControladorClieImplementacion implements ControladorClie {
 		Comercio com;
 		Collection<Comercio> comercios = new HashSet<>();
 		ResultSet rs = null;
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (SQLException e1) {
+			
+			e1.printStackTrace();
+		}
 		try {
 			stmt = con.prepareStatement(listarVendedores);
 			stmt.setString(1, id_prod);
@@ -220,7 +240,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 			throw new ReadException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
+			conection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -238,7 +258,12 @@ public class ControladorClieImplementacion implements ControladorClie {
 	public Integer listarCant(String id_com, String id_prod) throws ReadException {
 		int cant = 0;
 		ResultSet rs = null;
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (SQLException e1) {
+			
+			e1.printStackTrace();
+		}
 
 		try {
 			stmt = con.prepareStatement(leerCant);
@@ -253,7 +278,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 			throw new ReadException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
+			conection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import logica.ControladorClie;
 import logica.ControladorCom;
-import logica.ReadException;
+import logica.exception.ReadException;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -24,6 +24,7 @@ public class VComercio extends JFrame {
 	private static String DISABLE_DIALOG = "Disable Dialog";
 
 	public VComercio(VLogin vLogin, boolean b, String id, ControladorCom datos) {
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();

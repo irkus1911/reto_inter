@@ -18,6 +18,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 import logica.*;
+import logica.exception.ReadException;
 import modelo.*;
 import javax.swing.JPasswordField;
 

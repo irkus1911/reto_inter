@@ -18,6 +18,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import logica.*;
+import logica.exception.CreateException;
+import logica.exception.ReadException;
 import modelo.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
@@ -38,6 +40,8 @@ public class VPedido extends JDialog {
 	 */
 	
 	public VPedido(VCliente clie, boolean b, String id, ControladorClie datos) {
+		
+		this.setModal(b);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 
@@ -102,6 +106,8 @@ public class VPedido extends JDialog {
 
 	// VPedido para Comercios
 	public VPedido(VComercio com, boolean b, String id, ControladorCom datos) {
+		
+		this.setModal(b);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 
@@ -198,7 +204,8 @@ public class VPedido extends JDialog {
 			}
 			comboProducto.setSelectedIndex(-1);
 		} catch (ReadException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			
 		}
 	}
 

@@ -17,6 +17,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
 import logica.*;
+import logica.exception.ReadException;
 import modelo.*;
 
 public class VSuministrador extends JFrame implements ActionListener{

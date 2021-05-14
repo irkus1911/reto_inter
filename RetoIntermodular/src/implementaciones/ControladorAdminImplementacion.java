@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 import logica.*;
+import logica.exception.ConnectException;
+import logica.exception.CreateException;
+import logica.exception.ReadException;
 import modelo.*;
 
 public class ControladorAdminImplementacion implements ControladorAdmin {
@@ -17,26 +20,22 @@ public class ControladorAdminImplementacion implements ControladorAdmin {
 	// Atributos
 	private Connection con;
 	private PreparedStatement stmt;
-	// private InputStream inputStream;
-	private ResourceBundle configFile;
-	private String user, url, pass;
+	private ConnectionOpenClose conection = new ConnectionOpenClose(); 
 
 	// Sentencias
 	private final String comprobarLogin = "SELECT clave FROM cliente WHERE id_clie = ? and clave = ?";
 	private final String alta = "CALL `alta_usuario`(?,?,?,?,?)";
 
-	public ControladorAdminImplementacion() {
-		this.configFile = ResourceBundle.getBundle("modelo.config");
-		this.url = this.configFile.getString("URL");
-		this.user = this.configFile.getString("USER");
-		this.pass = this.configFile.getString("PASSWORD");
-	}
-
 	@Override
-	public boolean login(String id, String clave) throws ReadException {
+	public boolean login(String id, String clave) throws ReadException , ConnectException {
+	
 		boolean encontrado = false;
 		ResultSet rs = null;
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (ConnectException e1) {
+			e1.printStackTrace();
+		}
 		try {
 
 			stmt = con.prepareStatement(comprobarLogin);
@@ -54,8 +53,8 @@ public class ControladorAdminImplementacion implements ControladorAdmin {
 		}
 		try {
 
-			ConnectionOpenClose.closeConnection(stmt, con);
-		} catch (SQLException e) {
+			conection.closeConnection(stmt, con);
+		} catch (ConnectException e) {
 			e.printStackTrace();
 		}
 		if (rs != null) {
@@ -71,7 +70,11 @@ public class ControladorAdminImplementacion implements ControladorAdmin {
 	@Override
 	public void alta(String nombre, String clave, String id, String tipoUsuario, String tipoComercio)
 			throws CreateException {
-		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		try {
+			con = conection.openConnection();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		try {
 			stmt = con.prepareStatement(alta);
 			stmt.setString(1, nombre);
@@ -86,7 +89,7 @@ public class ControladorAdminImplementacion implements ControladorAdmin {
 			throw new CreateException(e.getMessage());
 		}
 		try {
-			ConnectionOpenClose.closeConnection(stmt, con);
+			conection.closeConnection(stmt, con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
