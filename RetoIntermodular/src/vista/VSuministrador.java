@@ -1,23 +1,17 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-
-
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-
-import logica.*;
-import modelo.*;
+import logica.ControladorSum;
+import logica.ReadException;
 
 public class VSuministrador extends JFrame implements ActionListener{
 
@@ -79,6 +73,7 @@ public class VSuministrador extends JFrame implements ActionListener{
 		if(e.getSource().equals(btnAñadirProducto)) {
 			VProducto ven=new VProducto(datos,id_sum);
 			ven.setVisible(true);
+			ven.setLocationRelativeTo(null);
 
 		}
 		if(e.getSource().equals(btnCerrarSesion)) {
@@ -96,17 +91,20 @@ public class VSuministrador extends JFrame implements ActionListener{
 		if(e.getSource().equals(btnRevisarStock)) {
 			VStock ven=new VStock(this,true,id_sum,datos);
 			ven.setVisible(true);
+			ven.setLocationRelativeTo(null);
 		
 			
 		}
 		if(e.getSource().equals(btnValidarPedidos)) {
 			VValidar ven=new VValidar(this, true, id_sum, datos);
 			ven.setVisible(true);
+			ven.setLocationRelativeTo(null);
 		
 		}
 	}
 	private void consultarPedido(String id, ControladorSum datos) throws ReadException {
 		VHistorico hist = new VHistorico(this, true, id, datos);
 		hist.setVisible(true);
+		hist.setLocationRelativeTo(null);
 	}
 }

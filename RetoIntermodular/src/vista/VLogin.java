@@ -1,49 +1,39 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import java.sql.*;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-import logica.*;
-import modelo.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import logica.ControladorAdmin;
+import logica.ControladorClie;
+import logica.ControladorCom;
+import logica.ControladorSum;
+import logica.ReadException;
 
 public class VLogin extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textFieldId;
-	private JTextField textFieldContraseina;
+	private JPasswordField passwordField;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		try {
-//			VLogin dialog = new VLogin();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
+	
 	/**
 	 * Create the dialog.
 	 * @wbp.parser.constructor
 	 */
 	public VLogin(ControladorClie datos) {
+		
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -77,20 +67,19 @@ public class VLogin extends JDialog {
 		JLabel lblContraseina = new JLabel("Contrase\u00F1a");
 		lblContraseina.setBounds(28, 129, 66, 14);
 		contentPanel.add(lblContraseina);
-
-		textFieldContraseina = new JTextField();
-		textFieldContraseina.setBounds(104, 126, 240, 20);
-		contentPanel.add(textFieldContraseina);
-		textFieldContraseina.setColumns(10);
-		textFieldContraseina.addFocusListener(new FocusAdapter() {
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(104, 126, 240, 20);
+		contentPanel.add(passwordField);
+		passwordField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (textFieldContraseina.getText().length() > 25) {
-
-					JOptionPane.showMessageDialog(textFieldContraseina, "El id no puede ser de más de 9 carácteres",
-							"Error longitud id", JOptionPane.ERROR_MESSAGE);
-					textFieldContraseina.setText("");
-					textFieldContraseina.requestFocus();
+				if (new String(passwordField.getPassword()).length() > 25) {
+					
+					JOptionPane.showMessageDialog(passwordField, "La contraseña no puede ser de más de 25 carácteres",
+							"Error longitud contraseña", JOptionPane.ERROR_MESSAGE);
+					passwordField.setText("");
+					passwordField.requestFocus();
 				}
 			}
 		});
@@ -99,8 +88,7 @@ public class VLogin extends JDialog {
 		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loginClie(datos);
-			
-				
+							
 			};
 		});
 		btnContinuar.setBounds(335, 217, 89, 23);
@@ -112,10 +100,13 @@ public class VLogin extends JDialog {
 				dispose();
 				VBienvenida bien = new VBienvenida();
 				bien.setVisible(true);
+				bien.setLocationRelativeTo(null);
 			}
 		});
 		btnCerrar.setBounds(236, 217, 89, 23);
 		contentPanel.add(btnCerrar);
+		
+		
 	}
 	public VLogin(ControladorCom datos) {
 		setBounds(100, 100, 450, 300);
@@ -152,19 +143,18 @@ public class VLogin extends JDialog {
 		lblContraseina.setBounds(28, 129, 66, 14);
 		contentPanel.add(lblContraseina);
 		
-		textFieldContraseina = new JTextField();
-		textFieldContraseina.setBounds(104, 126, 240, 20);
-		contentPanel.add(textFieldContraseina);
-		textFieldContraseina.setColumns(10);
-		textFieldContraseina.addFocusListener(new FocusAdapter() {
+		passwordField = new JPasswordField();
+		passwordField.setBounds(104, 126, 240, 20);
+		contentPanel.add(passwordField);
+		passwordField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (textFieldContraseina.getText().length() > 25) {
+				if (new String(passwordField.getPassword()).length() > 25) {
 					
-					JOptionPane.showMessageDialog(textFieldContraseina, "El id no puede ser de más de 9 carácteres",
-							"Error longitud id", JOptionPane.ERROR_MESSAGE);
-					textFieldContraseina.setText("");
-					textFieldContraseina.requestFocus();
+					JOptionPane.showMessageDialog(passwordField, "La contraseña no puede ser de más de 25 carácteres",
+							"Error longitud contraseña", JOptionPane.ERROR_MESSAGE);
+					passwordField.setText("");
+					passwordField.requestFocus();
 				}
 			}
 		});
@@ -184,6 +174,7 @@ public class VLogin extends JDialog {
 				dispose();
 				VBienvenida bien = new VBienvenida();
 				bien.setVisible(true);
+				bien.setLocationRelativeTo(null);
 			}
 		});
 		btnCerrar.setBounds(236, 217, 89, 23);
@@ -225,19 +216,18 @@ public class VLogin extends JDialog {
 		lblContraseina.setBounds(28, 129, 66, 14);
 		contentPanel.add(lblContraseina);
 		
-		textFieldContraseina = new JTextField();
-		textFieldContraseina.setBounds(104, 126, 240, 20);
-		contentPanel.add(textFieldContraseina);
-		textFieldContraseina.setColumns(10);
-		textFieldContraseina.addFocusListener(new FocusAdapter() {
+		passwordField = new JPasswordField();
+		passwordField.setBounds(104, 126, 240, 20);
+		contentPanel.add(passwordField);
+		passwordField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (textFieldContraseina.getText().length() > 25) {
+				if (new String(passwordField.getPassword()).length() > 25) {
 					
-					JOptionPane.showMessageDialog(textFieldContraseina, "El id no puede ser de más de 9 carácteres",
-							"Error longitud id", JOptionPane.ERROR_MESSAGE);
-					textFieldContraseina.setText("");
-					textFieldContraseina.requestFocus();
+					JOptionPane.showMessageDialog(passwordField, "La contraseña no puede ser de más de 25 carácteres",
+							"Error longitud contraseña", JOptionPane.ERROR_MESSAGE);
+					passwordField.setText("");
+					passwordField.requestFocus();
 				}
 			}
 		});
@@ -257,12 +247,13 @@ public class VLogin extends JDialog {
 				dispose();
 				VBienvenida bien = new VBienvenida();
 				bien.setVisible(true);
+				bien.setLocationRelativeTo(null);
 			}
 		});
 		btnCerrar.setBounds(236, 217, 89, 23);
 		contentPanel.add(btnCerrar);
 	}
-/*	public VLogin(ControladorAdmin datos) {
+	public VLogin(ControladorAdmin datos) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -297,19 +288,18 @@ public class VLogin extends JDialog {
 		lblContraseina.setBounds(28, 129, 66, 14);
 		contentPanel.add(lblContraseina);
 		
-		textFieldContraseina = new JTextField();
-		textFieldContraseina.setBounds(104, 126, 240, 20);
-		contentPanel.add(textFieldContraseina);
-		textFieldContraseina.setColumns(10);
-		textFieldContraseina.addFocusListener(new FocusAdapter() {
+		passwordField = new JPasswordField();
+		passwordField.setBounds(104, 126, 240, 20);
+		contentPanel.add(passwordField);
+		passwordField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (textFieldContraseina.getText().length() > 25) {
+				if (new String(passwordField.getPassword()).length() > 25) {
 					
-					JOptionPane.showMessageDialog(textFieldContraseina, "El id no puede ser de más de 9 carácteres",
-							"Error longitud id", JOptionPane.ERROR_MESSAGE);
-					textFieldContraseina.setText("");
-					textFieldContraseina.requestFocus();
+					JOptionPane.showMessageDialog(passwordField, "La contraseña no puede ser de más de 25 carácteres",
+							"Error longitud contraseña", JOptionPane.ERROR_MESSAGE);
+					passwordField.setText("");
+					passwordField.requestFocus();
 				}
 			}
 		});
@@ -317,7 +307,7 @@ public class VLogin extends JDialog {
 		JButton btnContinuar = new JButton("Continuar");
 		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				loginAdmin();
+				loginAdmin(datos);
 			};
 		});
 		btnContinuar.setBounds(335, 217, 89, 23);
@@ -325,57 +315,56 @@ public class VLogin extends JDialog {
 		
 		JButton btnCerrar = new JButton("Cerrar");
 		
-//		btnCerrar.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				dispose();
-//				VBienvenida bien = new VBienvenida();
-//				bien.setVisible(true);
-//			}
-//		});
+		btnCerrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				VBienvenida bien = new VBienvenida();
+				bien.setVisible(true);
+				bien.setLocationRelativeTo(null);
+			}
+		});
 		btnCerrar.setBounds(236, 217, 89, 23);
 		contentPanel.add(btnCerrar);
-	}*/
+	}
 	
 	public void loginClie(ControladorClie datos) {
 		try {
 		
-			boolean login = datos.login(textFieldId.getText(), textFieldContraseina.getText());
-			
-
-			
+			boolean login = datos.login(textFieldId.getText(), new String(passwordField.getPassword()));
+				
 			if (login) {
 				
 				VCliente vent = new VCliente(this, textFieldId.getText(), datos);
 				vent.setVisible(true);
-				
+				vent.setLocationRelativeTo(null);
+				this.setVisible(false);
 			} else {
-				JOptionPane.showMessageDialog(textFieldContraseina, "Se han introducido credenciales erroneas",
+				JOptionPane.showMessageDialog(passwordField, "Se han introducido credenciales erroneas",
 						"Error login", JOptionPane.ERROR_MESSAGE);
 				textFieldId.setText("");
-				textFieldContraseina.setText("");
+				passwordField.setText("");
 				textFieldId.requestFocus();
-
 			}
-			
-			//ReadException Q lo cambie yo 
-		} catch (Exception ex) {
-			
+		} catch (ReadException ex) {
 			JOptionPane.showMessageDialog(this,
 					"Error al intentar comprobar credenciales en la base de datos", "Error lectura BBDD",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
 	public void loginCom(ControladorCom datos) {
 		try {
-			boolean login = datos.login(textFieldId.getText(), textFieldContraseina.getText());
+			boolean login = datos.login(textFieldId.getText(), new String(passwordField.getPassword()));
 			if (login) {
 				VComercio vent = new VComercio(this, true, textFieldId.getText(), datos);
 				vent.setVisible(true);
+				vent.setLocationRelativeTo(null);
+				this.setVisible(false);			
 			} else {
-				JOptionPane.showMessageDialog(textFieldContraseina, "Se han introducido credenciales erroneas",
+				JOptionPane.showMessageDialog(passwordField, "Se han introducido credenciales erroneas",
 						"Error login", JOptionPane.ERROR_MESSAGE);
 				textFieldId.setText("");
-				textFieldContraseina.setText("");
+				passwordField.setText("");
 				textFieldId.requestFocus();
 				
 			}
@@ -385,17 +374,20 @@ public class VLogin extends JDialog {
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
 	public void loginSum(ControladorSum datos) {
 		try {
-			boolean login = datos.login(textFieldId.getText(), textFieldContraseina.getText());
+			boolean login = datos.login(textFieldId.getText(), new String(passwordField.getPassword()));
 			if (login) {
 				VSuministrador vent = new VSuministrador(this, true, textFieldId.getText(), datos);
 				vent.setVisible(true);
+				vent.setLocationRelativeTo(null);
+				this.setVisible(false);
 			} else {
-				JOptionPane.showMessageDialog(textFieldContraseina, "Se han introducido credenciales erroneas",
+				JOptionPane.showMessageDialog(passwordField, "Se han introducido credenciales erroneas",
 						"Error login", JOptionPane.ERROR_MESSAGE);
 				textFieldId.setText("");
-				textFieldContraseina.setText("");
+				passwordField.setText("");
 				textFieldId.requestFocus();
 				
 			}
@@ -405,34 +397,26 @@ public class VLogin extends JDialog {
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	/*public void loginAdmin() { //Ya que el usuario Administrador va a tener unas credenciales predefinidas  se realiza el login en la propia ventana, o con parametros predefinidos en el controlodar o en un archivo de configuracion
-		try {
-			boolean login = datos.login(textFieldId.getText(), textFieldContraseina.getText());
-			if (login) {
-				VAdmin vent = new VAdmin(this, true, textFieldId.getText(), datos);
+	public void loginAdmin(ControladorAdmin datos) {
+		//try {
+			//boolean login = datos.login(textFieldId.getText(), new String(passwordField.getPassword()));
+			if (textFieldId.getText().equals("ADMIN") && new String(passwordField.getPassword()).equals("admin")) {
+				VAdministrador vent = new VAdministrador(this, true, textFieldId.getText(), datos);
 				vent.setVisible(true);
+				vent.setLocationRelativeTo(null);
+				this.setVisible(false);
 			} else {
-				JOptionPane.showMessageDialog(textFieldContraseina, "Se han introducido credenciales erroneas",
+				JOptionPane.showMessageDialog(passwordField, "Se han introducido credenciales erroneas",
 						"Error login", JOptionPane.ERROR_MESSAGE);
 				textFieldId.setText("");
-				textFieldContraseina.setText("");
+				passwordField.setText("");
 				textFieldId.requestFocus();
 				
 			}
-		} catch (ReadException ex) {
-			JOptionPane.showMessageDialog(this,
-					"Error al intentar comprobar credenciales en la base de datos", "Error lectura BBDD",
-					JOptionPane.ERROR_MESSAGE);
-		}
-		if(textFieldId.getText().toUpperCase().equals("ADMIN") && textFieldContraseina.getText().equals("admin")) {
-			VAdministrador vent = new VAdministrador(this, true, textFieldId.getText(), datos);
-			vent.setVisible(true);
-		}else {
-			JOptionPane.showMessageDialog(textFieldContraseina, "Se han introducido credenciales erroneas",
-					"Error login", JOptionPane.ERROR_MESSAGE);
-			textFieldId.setText("");
-			textFieldContraseina.setText("");
-			textFieldId.requestFocus();
-		}
-	}*/
+//		} catch (ReadException ex) {
+//			JOptionPane.showMessageDialog(this,
+//					"Error al intentar comprobar credenciales en la base de datos", "Error lectura BBDD",
+//					JOptionPane.ERROR_MESSAGE);
+//		}
+	}
 }

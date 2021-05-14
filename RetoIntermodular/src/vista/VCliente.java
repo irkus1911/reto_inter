@@ -1,19 +1,16 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import logica.*;
-import modelo.*;
-
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import logica.ControladorClie;
+import logica.ReadException;
 
 public class VCliente extends JFrame {
 
@@ -62,9 +59,12 @@ public class VCliente extends JFrame {
 	}
 
 	private void cerrarSesion(ControladorClie datos) {
+	
 		try {
+			VBienvenida vent = new VBienvenida();
+			vent.setVisible(true);
+			vent.setLocationRelativeTo(null);
 			this.dispose();
-		//	VLogin login = new VLogin(datos);
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(btnCerrarSesion,
 					"Error al Cargar la Ventana", "Error Lectura Ventana",
@@ -77,6 +77,7 @@ public class VCliente extends JFrame {
 		try {
 			VHistorico hist = new VHistorico(this, true, id, datos);
 			hist.setVisible(true);
+			hist.setLocationRelativeTo(null);
 		} catch (ReadException e1) {
 			JOptionPane.showMessageDialog(btnConsultarPedidos,
 					"Error al intentar ver el historico de pedidos", "Error lectura BBDD",
@@ -88,6 +89,7 @@ public class VCliente extends JFrame {
 		
 		VPedido ped = new VPedido(this, true, id, datos);
 		ped.setVisible(true);
+		ped.setLocationRelativeTo(null);
 	}
 
 }

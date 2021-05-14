@@ -1,23 +1,20 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JComboBox;
 
-import logica.*;
-import modelo.*;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.awt.event.ActionEvent;
+import logica.ControladorCom;
+import logica.ControladorSum;
+import logica.ReadException;
+import logica.UpdateException;
+import modelo.Pedido;
 
 public class VValidar extends JDialog {
 	private JComboBox comboPedido;

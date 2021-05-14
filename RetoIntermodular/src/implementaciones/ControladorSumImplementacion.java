@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 
 import logica.*;
 import modelo.*;
+
 public class ControladorSumImplementacion implements ControladorSum {
 
 	// Atributos
@@ -23,12 +24,12 @@ public class ControladorSumImplementacion implements ControladorSum {
 	private ResultSet rs;
 	private ResourceBundle configFile;
 	private String user, url, pass;
-
+	private String admin;
 	// Sentencias
 	private final String comprobarLogin = "SELECT * FROM suministrador WHERE id_sum = ? and clave = ?";
 	private final String callValidar = "CALL `aceptar_pedido_s`(?,?,?,?)";
 	private final String mostrarPedidos = "SELECT comercio.id_com, producto.id_prod, pedidos_s.cant, pedidos_s.fecha,pedidos_s.estado FROM comercio, producto, pedidos_s WHERE comercio.id_com = pedidos_s.id_com AND producto.id_prod = pedidos_s.id_prod AND pedidos_s.id_sum = ? ";
-	private final String mostrarPedidosHist = "SELECT  comercio.nombre_com, comercio.id_com, producto.id_prod, producto.nombre, historico_s.cant, historico_s.fecha FROM comercio, producto, historico_s WHERE comercio.id_com = historico_s.id_com AND producto.id_prod = historico_s.id_prod AND historico_s.id_sum = ?";
+	private String mostrarPedidosHist = "SELECT  comercio.nombre_com, comercio.id_com, producto.id_prod, producto.nombre, historico_s.cant, historico_s.fecha FROM comercio, producto, historico_s WHERE comercio.id_com = historico_s.id_com AND producto.id_prod = historico_s.id_prod AND historico_s.id_sum = ?";
 	private final String querySelectStock = "SELECT stock_sum.id_prod, stock_sum.cant, producto.nombre FROM stock_sum,producto WHERE producto.id_prod=stock_sum.id_prod AND stock_sum.id_sum=? ";
 	private final String queryCall = "CALL `add_prod`(?,?,?,?)";
 
@@ -39,33 +40,12 @@ public class ControladorSumImplementacion implements ControladorSum {
 		this.pass = this.configFile.getString("PASSWORD");
 	}
 
-	public void openConnection() {
+	public Collection<Stock> stockSum(String id) throws ReadException {
 
-		try {
-
-			con = DriverManager.getConnection(this.url, this.user, this.pass);
-
-			System.out.println("Coneccion OK");
-
-		} catch (SQLException e) {
-			System.out.println("Error al intentar abrir la BD");
-		}
-	}
-
-	public void closeConnection() throws SQLException {
-		if (stmt != null) {
-			stmt.close();
-		}
-		if (con != null) {
-			con.close();
-		}
-	}
-
-	public Collection<Stock> stockSum(String id) {
-		// TODO Auto-generated method stub
 		ResultSet rs = null;
 		Collection<Stock> sto = new HashSet<Stock>();
-		openConnection();
+		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		
 		try {
 			Stock stock;
 
@@ -83,14 +63,11 @@ public class ControladorSumImplementacion implements ControladorSum {
 			}
 
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
 		try {
-			closeConnection();
+			ConnectionOpenClose.closeConnection(stmt, con);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (rs != null) {
@@ -104,8 +81,8 @@ public class ControladorSumImplementacion implements ControladorSum {
 	}
 
 	public void validarPedidoSum(String id_s, String id_com, String id_prod, LocalDateTime fecha) throws UpdateException {
-		// TODO Auto-generated method stub
-		openConnection();
+		
+		con = ConnectionOpenClose.openConnection(user, url, pass, con);
 		try {
 			stmt = con.prepareStatement(callValidar);
 			stmt.setString(1, id_s);
@@ -115,17 +92,14 @@ public class ControladorSumImplementacion implements ControladorSum {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			throw new UpdateException(e.getMessage());
 		}
 
 		try {
-			closeConnection();
+			ConnectionOpenClose.closeConnection(stmt, con);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	
@@ -136,9 +110,9 @@ public class ControladorSumImplementacion implements ControladorSum {
 
 		boolean encontrado = false;
 		ResultSet rs = null;
-		this.openConnection();
+		con = ConnectionOpenClose.openConnection(user, url, pass, con);
+		
 		try {
-
 			stmt = con.prepareStatement(comprobarLogin);
 			stmt.setString(1, id);
 			stmt.setString(2, clave);
@@ -148,15 +122,12 @@ public class ControladorSumImplementacion implements ControladorSum {
 				System.out.println("While");
 				encontrado = true;
 			}
-
 		} catch (Exception e) {
 			throw new ReadException(e.getMessage());
 		}
-
 		try {
-			this.closeConnection();
+			ConnectionOpenClose.closeConnection(stmt, con);
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
 		if (rs != null) {
@@ -166,24 +137,29 @@ public class ControladorSumImplementacion implements ControladorSum {
 				System.out.println("Error en cierre del ResultSet");
 			}
 		}
-
 		return encontrado;
-
 	}
 
 	@Override
-	public Collection<Historico> historicoComSum(String id) throws ReadException {
-		// TODO Auto-generated method stub
+	public Collection<Historico> historicoSumCom(String id) throws ReadException {
+		
 		Historico hist;
 		Collection<Historico> historico = new HashSet<Historico>();
 		ResultSet rs = null;
-
-		this.openConnection();
+		if(id.equals("ADMIN")) {
+			admin = " AND comercio.id_com = 'ADMIN'";
+			
+		} else {
+			admin =  " AND comercio.id_com != 'ADMIN'";
+		}
+		mostrarPedidosHist+=admin;
+		con = ConnectionOpenClose.openConnection(user, url, pass, con);
 		try {
 			stmt = con.prepareStatement(mostrarPedidosHist);
 			stmt.setString(1, id);
 			System.out.println("query");
 			rs = stmt.executeQuery();
+	
 			while (rs.next()) {
 				System.out.println("while");
 				hist = new Historico();
@@ -197,17 +173,12 @@ public class ControladorSumImplementacion implements ControladorSum {
 				hist.setFecha(rs.getTimestamp("historico_s.fecha").toLocalDateTime());
 				historico.add(hist);
 			}
-
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-
 			throw new ReadException(e.getMessage());
 		}
-
 		try {
-			this.closeConnection();
+			ConnectionOpenClose.closeConnection(stmt, con);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (rs != null) {
@@ -226,7 +197,7 @@ public class ControladorSumImplementacion implements ControladorSum {
 		Collection<Pedido> pedidos = new HashSet<Pedido>();
 		ResultSet rs = null;
 
-		this.openConnection();
+		con = ConnectionOpenClose.openConnection(user, url, pass, con);
 		try {
 			stmt = con.prepareStatement(mostrarPedidos);
 			stmt.setString(1, id);
@@ -245,15 +216,12 @@ public class ControladorSumImplementacion implements ControladorSum {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-
 			throw new ReadException(e.getMessage());
 		}
 
 		try {
-			this.closeConnection();
+			ConnectionOpenClose.closeConnection(stmt, con);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (rs != null) {
@@ -263,14 +231,13 @@ public class ControladorSumImplementacion implements ControladorSum {
 				System.out.println("Error en cierre del ResultSet");
 			}
 		}
-
 		return pedidos;
 	}
 
 	@Override
 	public void anadirProd(String id_s, String id_p, int cant, String nombre) throws CreateException {
-		// TODO Auto-generated method stub
-		openConnection();
+		
+		con = ConnectionOpenClose.openConnection(user, url, pass, con);
 		try {
 			stmt = con.prepareStatement(queryCall);
 			stmt.setString(1, id_s);
@@ -281,11 +248,9 @@ public class ControladorSumImplementacion implements ControladorSum {
 		} catch (Exception e) {
 			throw new CreateException(e.getMessage());
 		}
-
 		try {
-			closeConnection();
+			ConnectionOpenClose.closeConnection(stmt, con);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -1,25 +1,23 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import logica.ControladorClie;
 import logica.ControladorCom;
 import logica.ReadException;
-
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class VComercio extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnCerrarSesion;
+	private static String DISABLE_DIALOG_COMPONENTS = "Disable Dialog Components";
+	private static String DISABLE_DIALOG = "Disable Dialog";
 
 	public VComercio(VLogin vLogin, boolean b, String id, ControladorCom datos) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,22 +45,15 @@ public class VComercio extends JFrame {
 		btnHacerPedido.setBounds(263, 89, 135, 23);
 		contentPane.add(btnHacerPedido);
 
-		JButton btnHistoricoCliente = new JButton("Historico cliente");
-		btnHistoricoCliente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				historicoClieCom(id, datos);
-			}
-		});
-		btnHistoricoCliente.setBounds(30, 192, 130, 23);
-		contentPane.add(btnHistoricoCliente);
+		
 
-		JButton btnHistoricoSuministrador = new JButton("Historico Suministrador");
+		JButton btnHistoricoSuministrador = new JButton("Historico compras y ventas");
 		btnHistoricoSuministrador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				historicoComSum(id, datos);
 			}
 		});
-		btnHistoricoSuministrador.setBounds(247, 192, 177, 23);
+		btnHistoricoSuministrador.setBounds(118, 193, 177, 23);
 		contentPane.add(btnHistoricoSuministrador);
 
 		JButton btnValidarPedidos = new JButton("Validar Pedidos");
@@ -86,8 +77,10 @@ public class VComercio extends JFrame {
 	
 	private void cerrarSesion(ControladorCom datos) {
 		try {
+			VBienvenida vent = new VBienvenida();
+			vent.setVisible(true);
+			vent.setLocationRelativeTo(null);
 			this.dispose();
-		//	VLogin login = new VLogin(datos);
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(btnCerrarSesion,
 					"Error al Cargar la Ventana", "Error Lectura Ventana",
@@ -100,12 +93,12 @@ public class VComercio extends JFrame {
 		try {
 			VValidar vali = new VValidar(this, true, id, datos);
 			vali.setVisible(true);
+			vali.setLocationRelativeTo(null);
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(btnCerrarSesion,
 					"Error al abrir Ventana", "Error lectura Ventana",
 					JOptionPane.ERROR_MESSAGE);
 		}
-		
 	}
 
 	private void stockCom(String id, ControladorCom datos) {
@@ -113,8 +106,27 @@ public class VComercio extends JFrame {
 		try {
 			VStock stock = new VStock(this, true, id, datos);
 			stock.setVisible(true);
+			stock.setLocationRelativeTo(null);
 			
-			//MOdificado Excepcion (ReadException)
+		/*	
+		 * la mierda del pto focus para quitar los ptos botones
+			stock.setFocusableWindowState(true);
+			stock.transferFocus();
+			stock.setFocusable(true);
+			this.setFocusableWindowState(false);
+			this.setFocusable(false);
+			
+			
+			if(!this.hasFocus()) {
+				System.out.println("no_CO");
+			//	this.disable();
+			//	this.disableEvents(EXIT_ON_CLOSE);
+			}else {
+				System.out.println("si_CO");
+				this.enable();
+			}
+*/
+			
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(this,
 					"Error al intentar ver el historico de pedidos", "Error lectura BBDD",
@@ -122,38 +134,23 @@ public class VComercio extends JFrame {
 		}
 	}
 
-	protected void historicoClieCom(String id, ControladorCom datos) {
-
-		//BOTON HABILITADO PERO NO FUNCIONAL
-		try {
-			VHistorico hist = new VHistorico(this, true, id, datos);
-			hist.setVisible(true);
-		} catch (ReadException e1) {
-			JOptionPane.showMessageDialog(btnCerrarSesion,
-					"Error al intentar ver el historico de pedidos", "Error lectura BBDD",
-					JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
 	private void historicoComSum(String id, ControladorCom datos) {
 		
-		// SELECT MAL IMPLEMENTADA 
-		
 		try {
 			VHistorico hist = new VHistorico(this, true, id, datos);
 			hist.setVisible(true);
+			hist.setLocationRelativeTo(null);
 		} catch (ReadException e1) {
 			JOptionPane.showMessageDialog(btnCerrarSesion,
 					"Error al intentar ver el historico de pedidos", "Error lectura BBDD",
 					JOptionPane.ERROR_MESSAGE);
 		}
-	}
-	
+	}	
 	
 	private void pedido(String id, ControladorCom datos) {
 
 		VPedido ped = new VPedido(this, true, id, datos);
 		ped.setVisible(true);
+		ped.setLocationRelativeTo(null);
 	}
-
 }

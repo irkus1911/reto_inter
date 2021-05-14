@@ -2,6 +2,8 @@ package vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Collection;
 
 import javax.swing.JButton;
@@ -12,15 +14,13 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-
-import logica.*;
-import modelo.*;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
+import logica.ControladorClie;
+import logica.ControladorCom;
+import logica.CreateException;
+import logica.ReadException;
+import modelo.Comercio;
+import modelo.Producto;
+import modelo.Suministrador;
 
 public class VPedido extends JDialog {
 	private static final long serialVersionUID = 1L;
@@ -52,7 +52,7 @@ public class VPedido extends JDialog {
 				if (comboProducto.getSelectedIndex() != -1) {
 					id_prod = comboProducto.getSelectedItem().toString().substring(0,
 							comboProducto.getSelectedItem().toString().indexOf(" - "));
-					cargarVendedor(id_prod, datos);
+					cargarVendedor(id_prod, id, datos);
 				}
 
 			}
@@ -116,7 +116,7 @@ public class VPedido extends JDialog {
 				if (comboProducto.getSelectedIndex() != -1) {
 					id_prod = comboProducto.getSelectedItem().toString().substring(0,
 							comboProducto.getSelectedItem().toString().indexOf(" - "));
-					cargarVendedor(id_prod, datos);
+					cargarVendedor(id_prod, id, datos);
 				}
 
 			}
@@ -176,10 +176,10 @@ public class VPedido extends JDialog {
 		}
 	}
 
-	private void cargarVendedor(String id_prod, ControladorClie datos) {
+	private void cargarVendedor(String id_prod, String id_clie, ControladorClie datos) {
 		
 		try {
-			Collection<Comercio> comercios = datos.listarVendedor(id_prod);
+			Collection<Comercio> comercios = datos.listarVendedor(id_prod,id_clie);
 			for (Comercio com : comercios) {
 				comboVendedor.addItem(com.getCifCom() + " - " + com.getTipoCom() + ": " + com.getNombreCom());
 			}
@@ -226,10 +226,10 @@ public class VPedido extends JDialog {
 		}
 	}
 
-	private void cargarVendedor(String id_prod, ControladorCom datos) {
+	private void cargarVendedor(String id_prod, String id_sum, ControladorCom datos) {
 	
 		try {
-			Collection<Suministrador> suministradores = datos.listarVendedor(id_prod);
+			Collection<Suministrador> suministradores = datos.listarVendedor(id_prod, id_sum);
 			for (Suministrador sum : suministradores) {
 				comboVendedor.addItem(sum.getCifSum() + " - " + sum.getNombreSum());
 			}
