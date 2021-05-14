@@ -1,6 +1,8 @@
 package vista;
 
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
 
 import javax.swing.JButton;
@@ -18,15 +20,6 @@ public class VHistorico extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		try {
-//			VHistorico dialog = new VHistorico();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
 
 	public VHistorico(VCliente clie, boolean b, String id, ControladorClie datos) throws ReadException {
 		this.setModal(b);
@@ -38,6 +31,11 @@ public class VHistorico extends JDialog {
 		getContentPane().add(lblNombreHistorico);
 
 		JButton btnAtras = new JButton("Atras");
+		btnAtras.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnAtras.setBounds(172, 227, 89, 23);
 		getContentPane().add(btnAtras);
 
@@ -64,15 +62,19 @@ public class VHistorico extends JDialog {
 		lblNombreHistorico.setBounds(89, 11, 200, 39);
 		getContentPane().add(lblNombreHistorico);
 
-
 		JButton btnAtras = new JButton("Atras");
+		btnAtras.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnAtras.setBounds(10, 227, 89, 23);
 		getContentPane().add(btnAtras);
 
 		String[] columnas = { "VENDEDOR", "PRODUCTO", "CANTIDAD", "FECHA" };
 		try {
 			Collection<Historico> historico = datos.historicoComSum(id);
-			tableHistorico = new JTable(cargarHistoricoCom(datos, historico), columnas);
+			tableHistorico = new JTable(cargarHistoricoCom_Sum(datos, historico), columnas);
 			tableHistorico.setBounds(36, 65, 347, 132);
 			getContentPane().add(tableHistorico);
 		} catch (ReadException e) {
@@ -92,8 +94,12 @@ public class VHistorico extends JDialog {
 		lblNombreHistorico.setBounds(89, 11, 200, 39);
 		getContentPane().add(lblNombreHistorico);
 
-	
 		JButton btnAtras = new JButton("Atras");
+		btnAtras.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnAtras.setBounds(10, 227, 89, 23);
 		getContentPane().add(btnAtras);
 
@@ -129,7 +135,7 @@ public class VHistorico extends JDialog {
 		return histTabla;
 	}
 
-	protected String[][] cargarHistoricoCom(ControladorCom datos, Collection<Historico> historico) {
+	protected String[][] cargarHistoricoCom_Sum(ControladorCom datos, Collection<Historico> historico) {
 		int cont = 1;
 		String[][] histTabla = new String[historico.size() + 1][4];
 		histTabla[0][0] = "COMERCIO";

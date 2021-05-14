@@ -6,17 +6,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
-import logica.ControladorSum;
-import logica.ReadException;
-import modelo.Historico;
-import modelo.Pedido;
-import modelo.Stock;
-
+import logica.*;
+import modelo.*;
 public class ControladorSumImplementacion implements ControladorSum {
 
 	// Atributos
@@ -30,11 +28,9 @@ public class ControladorSumImplementacion implements ControladorSum {
 	private final String comprobarLogin = "SELECT * FROM suministrador WHERE id_sum = ? and clave = ?";
 	private final String callValidar = "CALL `aceptar_pedido_s`(?,?,?,?)";
 	private final String mostrarPedidos = "SELECT comercio.id_com, producto.id_prod, pedidos_s.cant, pedidos_s.fecha,pedidos_s.estado FROM comercio, producto, pedidos_s WHERE comercio.id_com = pedidos_s.id_com AND producto.id_prod = pedidos_s.id_prod AND pedidos_s.id_sum = ? ";
-
 	private final String mostrarPedidosHist = "SELECT  comercio.nombre_com, comercio.id_com, producto.id_prod, producto.nombre, historico_s.cant, historico_s.fecha FROM comercio, producto, historico_s WHERE comercio.id_com = historico_s.id_com AND producto.id_prod = historico_s.id_prod AND historico_s.id_sum = ?";
-
 	private final String querySelectStock = "SELECT stock_sum.id_prod, stock_sum.cant, producto.nombre FROM stock_sum,producto WHERE producto.id_prod=stock_sum.id_prod AND stock_sum.id_sum=? ";
-	private final String queryCall = "CALL add_stock_sum ('?', '?', '?') ";
+	private final String queryCall = "CALL `add_prod`(?,?,?,?)";
 
 	public ControladorSumImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.config");
@@ -107,7 +103,7 @@ public class ControladorSumImplementacion implements ControladorSum {
 		return sto;
 	}
 
-	public void validarPedidoSum(String id_s, String id_com, String id_prod, LocalDate fecha) {
+	public void validarPedidoSum(String id_s, String id_com, String id_prod, LocalDateTime fecha) throws UpdateException {
 		// TODO Auto-generated method stub
 		openConnection();
 		try {
@@ -115,12 +111,12 @@ public class ControladorSumImplementacion implements ControladorSum {
 			stmt.setString(1, id_s);
 			stmt.setString(2, id_com);
 			stmt.setString(3, id_prod);
-			stmt.setDate(4, Date.valueOf(fecha));
-			stmt.executeQuery();
+			stmt.setTimestamp(4, Timestamp.valueOf(fecha));
+			stmt.executeUpdate();
 
-		} catch (SQLException e1) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			throw new UpdateException(e.getMessage());
 		}
 
 		try {
@@ -132,28 +128,7 @@ public class ControladorSumImplementacion implements ControladorSum {
 
 	}
 
-	public void anadirStock(String id_s, String id_p, int cant) {
-		// TODO Auto-generated method stub
-		openConnection();
-		try {
-			stmt = con.prepareStatement(queryCall);
-			stmt.setString(1, id_s);
-			stmt.setString(2, id_p);
-			stmt.setInt(3, cant);
-			stmt.executeQuery();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		try {
-			closeConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
+	
 	@Override
 	public boolean login(String id, String clave) throws ReadException {
 
@@ -219,7 +194,7 @@ public class ControladorSumImplementacion implements ControladorSum {
 				hist.setIdProd(rs.getString("producto.id_prod"));
 				hist.setProducto(rs.getString("producto.nombre"));
 				hist.setCant(rs.getInt("historico_s.cant"));
-				hist.setFecha(rs.getDate("historico_s.fecha").toLocalDate());
+				hist.setFecha(rs.getTimestamp("historico_s.fecha").toLocalDateTime());
 				historico.add(hist);
 			}
 
@@ -246,7 +221,6 @@ public class ControladorSumImplementacion implements ControladorSum {
 		return historico;
 	}
 
-	@Override
 	public Collection<Pedido> listarPed(String id) throws ReadException {
 		Pedido ped;
 		Collection<Pedido> pedidos = new HashSet<Pedido>();
@@ -261,11 +235,11 @@ public class ControladorSumImplementacion implements ControladorSum {
 			while (rs.next()) {
 				System.out.println("while");
 				ped = new Pedido();
-				ped.setIdComprador(id);
-				ped.setIdVendedor(rs.getString("comercio.id_com"));
+				ped.setIdComprador(rs.getString("comercio.id_com"));
+				ped.setIdVendedor(id);
 				ped.setIdProd(rs.getString("producto.id_prod"));
 				ped.setCant(rs.getInt("pedidos_s.cant"));
-				ped.setFecha(rs.getDate("pedidos_s.fecha").toLocalDate());
+				ped.setFecha(rs.getTimestamp("pedidos_s.fecha").toLocalDateTime());
 				ped.setEstado(rs.getBoolean("pedidos_s.estado"));
 				pedidos.add(ped);
 			}
@@ -291,6 +265,29 @@ public class ControladorSumImplementacion implements ControladorSum {
 		}
 
 		return pedidos;
+	}
+
+	@Override
+	public void anadirProd(String id_s, String id_p, int cant, String nombre) throws CreateException {
+		// TODO Auto-generated method stub
+		openConnection();
+		try {
+			stmt = con.prepareStatement(queryCall);
+			stmt.setString(1, id_s);
+			stmt.setString(2, id_p);
+			stmt.setInt(3, cant);
+			stmt.setString(4, nombre);
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			throw new CreateException(e.getMessage());
+		}
+
+		try {
+			closeConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

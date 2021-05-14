@@ -29,10 +29,19 @@ public class VLogin extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-
+//	public static void main(String[] args) {
+//		try {
+//			VLogin dialog = new VLogin();
+//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//			dialog.setVisible(true);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * Create the dialog.
+	 * @wbp.parser.constructor
 	 */
 	public VLogin(ControladorClie datos) {
 		setBounds(100, 100, 450, 300);
@@ -98,6 +107,13 @@ public class VLogin extends JDialog {
 		contentPanel.add(btnContinuar);
 
 		JButton btnCerrar = new JButton("Cerrar");
+		btnCerrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				VBienvenida bien = new VBienvenida();
+				bien.setVisible(true);
+			}
+		});
 		btnCerrar.setBounds(236, 217, 89, 23);
 		contentPanel.add(btnCerrar);
 	}
@@ -163,9 +179,17 @@ public class VLogin extends JDialog {
 		contentPanel.add(btnContinuar);
 		
 		JButton btnCerrar = new JButton("Cerrar");
+		btnCerrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				VBienvenida bien = new VBienvenida();
+				bien.setVisible(true);
+			}
+		});
 		btnCerrar.setBounds(236, 217, 89, 23);
 		contentPanel.add(btnCerrar);
 	}
+	
 	public VLogin(ControladorSum datos) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -228,6 +252,13 @@ public class VLogin extends JDialog {
 		contentPanel.add(btnContinuar);
 		
 		JButton btnCerrar = new JButton("Cerrar");
+		btnCerrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				VBienvenida bien = new VBienvenida();
+				bien.setVisible(true);
+			}
+		});
 		btnCerrar.setBounds(236, 217, 89, 23);
 		contentPanel.add(btnCerrar);
 	}
@@ -293,6 +324,14 @@ public class VLogin extends JDialog {
 		contentPanel.add(btnContinuar);
 		
 		JButton btnCerrar = new JButton("Cerrar");
+		
+//		btnCerrar.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				dispose();
+//				VBienvenida bien = new VBienvenida();
+//				bien.setVisible(true);
+//			}
+//		});
 		btnCerrar.setBounds(236, 217, 89, 23);
 		contentPanel.add(btnCerrar);
 	}*/

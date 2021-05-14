@@ -52,24 +52,40 @@ public class VCliente extends JFrame {
 		contentPane.add(btnConsultarPedidos);
 
 		JButton btnCerrarSesion = new JButton("Cerrar Sesion");
+		btnCerrarSesion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cerrarSesion(datos);
+			}
+		});
 		btnCerrarSesion.setBounds(307, 228, 117, 23);
 		contentPane.add(btnCerrarSesion);
 	}
 
+	private void cerrarSesion(ControladorClie datos) {
+		try {
+			this.dispose();
+		//	VLogin login = new VLogin(datos);
+		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(btnCerrarSesion,
+					"Error al Cargar la Ventana", "Error Lectura Ventana",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 	private void consultarPedido(String id, ControladorClie datos) {
-		// TODO Auto-generated method stub
+		
 		try {
 			VHistorico hist = new VHistorico(this, true, id, datos);
 			hist.setVisible(true);
 		} catch (ReadException e1) {
-			JOptionPane.showMessageDialog(btnCerrarSesion,
+			JOptionPane.showMessageDialog(btnConsultarPedidos,
 					"Error al intentar ver el historico de pedidos", "Error lectura BBDD",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void pedido(String id, ControladorClie datos) {
-		// TODO Auto-generated method stub
+		
 		VPedido ped = new VPedido(this, true, id, datos);
 		ped.setVisible(true);
 	}

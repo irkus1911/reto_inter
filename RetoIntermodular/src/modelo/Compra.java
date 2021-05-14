@@ -1,13 +1,13 @@
 package modelo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Compra {
 
 	private String idComprador;
 	private String idVendedor;
 	private String idProd;
-	private LocalDate fecha;
+	private LocalDateTime fecha;
 	private int cant;
 	
 	
@@ -29,10 +29,10 @@ public class Compra {
 	public void setIdProd(String idProd) {
 		this.idProd = idProd;
 	}
-	public LocalDate getFecha() {
+	public LocalDateTime getFecha() {
 		return fecha;
 	}
-	public void setFecha(LocalDate fecha) {
+	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
 	public int getCant() {
