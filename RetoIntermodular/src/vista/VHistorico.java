@@ -1,6 +1,5 @@
 package vista;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
@@ -14,21 +13,22 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 
 import logica.*;
+import logica.exception.ReadException;
 import modelo.*;
 
 public class VHistorico extends JDialog {
+
 	private JTable tableHistorico;
 
+	/**
+	 * @wbp.parser.constructor
+	 */
 
-	
 	public VHistorico(VCliente clie, boolean b, String id, ControladorClie datos) throws ReadException {
+
 		this.setModal(b);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
-
-		JLabel lblNombreHistorico = new JLabel("Historico de ...");
-		lblNombreHistorico.setBounds(89, 11, 200, 39);
-		getContentPane().add(lblNombreHistorico);
 
 		JButton btnAtras = new JButton("Atras");
 		btnAtras.addActionListener(new ActionListener() {
@@ -50,23 +50,16 @@ public class VHistorico extends JDialog {
 			JOptionPane.showMessageDialog(this, "Error al intentar listar datos de la base de datos",
 					"Error lectura BBDD", JOptionPane.ERROR_MESSAGE);
 		}
-
 	}
 
-	
-	/**
-	 * @wbp.parser.constructor
-	 */
 	public VHistorico(VComercio vCom, boolean b, String id, ControladorCom datos) throws ReadException {
+
 		this.setModal(b);
 		setBounds(100, 100, 450, 400);
-		
-		JTabbedPane pestañas=new JTabbedPane();
+
+		JTabbedPane pestañas = new JTabbedPane();
 		JPanel histCompras = new JPanel();
 		histCompras.setLayout(null);
-		JLabel lblNombreHistorico = new JLabel("Historico de ...");
-		lblNombreHistorico.setBounds(89, 11, 200, 39);
-		histCompras.add(lblNombreHistorico);
 
 		JButton btnAtras = new JButton("Atras");
 		btnAtras.addActionListener(new ActionListener() {
@@ -89,9 +82,6 @@ public class VHistorico extends JDialog {
 		}
 		JPanel histVentas = new JPanel();
 		histVentas.setLayout(null);
-		lblNombreHistorico = new JLabel("Historico de ...");
-		lblNombreHistorico.setBounds(89, 11, 200, 39);
-		histVentas.add(lblNombreHistorico);
 
 		btnAtras = new JButton("Atras");
 		btnAtras.addActionListener(new ActionListener() {
@@ -114,19 +104,15 @@ public class VHistorico extends JDialog {
 		}
 		pestañas.addTab("Historico Compras", histCompras);
 		pestañas.addTab("Historico Ventas", histVentas);
-		 getContentPane().add(pestañas);
-		
+		getContentPane().add(pestañas);
 
 	}
 
 	public VHistorico(VSuministrador vSum, boolean b, String id, ControladorSum datos) {
+		
 		this.setModal(b);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
-
-		JLabel lblNombreHistorico = new JLabel("Historico de ...");
-		lblNombreHistorico.setBounds(89, 11, 200, 39);
-		getContentPane().add(lblNombreHistorico);
 
 		JButton btnAtras = new JButton("Atras");
 		btnAtras.addActionListener(new ActionListener() {
@@ -147,7 +133,6 @@ public class VHistorico extends JDialog {
 			JOptionPane.showMessageDialog(this, "Error al intentar listar datos de la base de datos",
 					"Error lectura BBDD", JOptionPane.ERROR_MESSAGE);
 		}
-		
 
 	}
 
@@ -186,6 +171,7 @@ public class VHistorico extends JDialog {
 		}
 		return histTabla;
 	}
+
 	protected String[][] cargarHistoricoCom_Clie(ControladorCom datos, Collection<Historico> historico) {
 		int cont = 1;
 		String[][] histTabla = new String[historico.size() + 1][4];
@@ -193,7 +179,7 @@ public class VHistorico extends JDialog {
 		histTabla[0][1] = "PRODUCTO";
 		histTabla[0][2] = "CANTIDAD COMPRADA";
 		histTabla[0][3] = "FECHA COMPRA";
-		
+
 		for (Historico hist : historico) {
 			histTabla[cont][0] = hist.getComprador();
 			histTabla[cont][1] = hist.getProducto();
@@ -203,6 +189,7 @@ public class VHistorico extends JDialog {
 		}
 		return histTabla;
 	}
+
 	protected String[][] cargarHistoricoSum(ControladorSum datos, Collection<Historico> historico) {
 		int cont = 1;
 		String[][] histTabla = new String[historico.size() + 1][4];
@@ -210,7 +197,7 @@ public class VHistorico extends JDialog {
 		histTabla[0][1] = "PRODUCTO";
 		histTabla[0][2] = "CANTIDAD COMPRADA";
 		histTabla[0][3] = "FECHA COMPRA";
-		
+
 		for (Historico hist : historico) {
 			histTabla[cont][0] = hist.getVendedor();
 			histTabla[cont][1] = hist.getProducto();

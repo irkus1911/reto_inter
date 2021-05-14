@@ -15,12 +15,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		
-	
-		
-		
 		VBienvenida vent = new VBienvenida();
 		vent.setVisible(true);
+		vent.setLocationRelativeTo(null);
 	}
 	
 	public static ControladorClie datosClie() {

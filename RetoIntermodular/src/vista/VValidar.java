@@ -12,6 +12,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 
 import logica.*;
+import logica.exception.ReadException;
+import logica.exception.UpdateException;
 import modelo.*;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -28,6 +30,8 @@ public class VValidar extends JDialog {
 	private LocalDateTime fecha;
 
 	public VValidar(VSuministrador vSuministrador, boolean b, String id, ControladorSum datos) {
+
+		this.setModal(b);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 
@@ -58,6 +62,7 @@ public class VValidar extends JDialog {
 
 	public VValidar(VComercio vCom, boolean b, String id, ControladorCom datos) {
 
+		this.setModal(b);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 
@@ -87,6 +92,7 @@ public class VValidar extends JDialog {
 	}
 
 	private void validarPedido(String id, ControladorCom datos) {
+
 		if (comboPedido.getSelectedIndex() != -1) {
 			String pedido = comboPedido.getSelectedItem().toString();
 
@@ -127,12 +133,13 @@ public class VValidar extends JDialog {
 	}
 
 	private void validarPedido(String id, ControladorSum datos) {
+
 		if (comboPedido.getSelectedIndex() != -1) {
 			String pedido = comboPedido.getSelectedItem().toString();
 
 			String id_com = pedido.substring(0, pedido.indexOf(" - "));
 			id_prod = pedido.substring(pedido.lastIndexOf(" - ") + 3, pedido.indexOf(" ca"));
-			fecha =  LocalDateTime.parse(pedido.substring(pedido.lastIndexOf("a: ") + 3, pedido.length()));
+			fecha = LocalDateTime.parse(pedido.substring(pedido.lastIndexOf("a: ") + 3, pedido.length()));
 			try {
 				datos.validarPedidoSum(id, id_com, id_prod, fecha);
 				JOptionPane.showMessageDialog(this, "Pedido validado correctamente", "Pedido validado",

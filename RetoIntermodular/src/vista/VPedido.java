@@ -18,6 +18,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import logica.*;
+import logica.exception.CreateException;
+import logica.exception.ReadException;
 import modelo.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
@@ -38,6 +40,8 @@ public class VPedido extends JDialog {
 	 */
 	
 	public VPedido(VCliente clie, boolean b, String id, ControladorClie datos) {
+		
+		this.setModal(b);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 
@@ -52,7 +56,7 @@ public class VPedido extends JDialog {
 				if (comboProducto.getSelectedIndex() != -1) {
 					id_prod = comboProducto.getSelectedItem().toString().substring(0,
 							comboProducto.getSelectedItem().toString().indexOf(" - "));
-					cargarVendedor(id_prod, datos);
+					cargarVendedor(id_prod, id, datos);
 				}
 
 			}
@@ -102,6 +106,8 @@ public class VPedido extends JDialog {
 
 	// VPedido para Comercios
 	public VPedido(VComercio com, boolean b, String id, ControladorCom datos) {
+		
+		this.setModal(b);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 
@@ -116,7 +122,7 @@ public class VPedido extends JDialog {
 				if (comboProducto.getSelectedIndex() != -1) {
 					id_prod = comboProducto.getSelectedItem().toString().substring(0,
 							comboProducto.getSelectedItem().toString().indexOf(" - "));
-					cargarVendedor(id_prod, datos);
+					cargarVendedor(id_prod, id, datos);
 				}
 
 			}
@@ -176,10 +182,10 @@ public class VPedido extends JDialog {
 		}
 	}
 
-	private void cargarVendedor(String id_prod, ControladorClie datos) {
+	private void cargarVendedor(String id_prod, String id_clie, ControladorClie datos) {
 		
 		try {
-			Collection<Comercio> comercios = datos.listarVendedor(id_prod);
+			Collection<Comercio> comercios = datos.listarVendedor(id_prod,id_clie);
 			for (Comercio com : comercios) {
 				comboVendedor.addItem(com.getCifCom() + " - " + com.getTipoCom() + ": " + com.getNombreCom());
 			}
@@ -198,7 +204,8 @@ public class VPedido extends JDialog {
 			}
 			comboProducto.setSelectedIndex(-1);
 		} catch (ReadException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			
 		}
 	}
 
@@ -226,10 +233,10 @@ public class VPedido extends JDialog {
 		}
 	}
 
-	private void cargarVendedor(String id_prod, ControladorCom datos) {
+	private void cargarVendedor(String id_prod, String id_sum, ControladorCom datos) {
 	
 		try {
-			Collection<Suministrador> suministradores = datos.listarVendedor(id_prod);
+			Collection<Suministrador> suministradores = datos.listarVendedor(id_prod, id_sum);
 			for (Suministrador sum : suministradores) {
 				comboVendedor.addItem(sum.getCifSum() + " - " + sum.getNombreSum());
 			}

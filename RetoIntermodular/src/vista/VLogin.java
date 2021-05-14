@@ -18,6 +18,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 import logica.*;
+import logica.exception.ReadException;
 import modelo.*;
 import javax.swing.JPasswordField;
 
@@ -33,6 +34,7 @@ public class VLogin extends JDialog {
 	 * @wbp.parser.constructor
 	 */
 	public VLogin(ControladorClie datos) {
+		
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -87,8 +89,7 @@ public class VLogin extends JDialog {
 		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loginClie(datos);
-			
-				
+							
 			};
 		});
 		btnContinuar.setBounds(335, 217, 89, 23);
@@ -100,6 +101,7 @@ public class VLogin extends JDialog {
 				dispose();
 				VBienvenida bien = new VBienvenida();
 				bien.setVisible(true);
+				bien.setLocationRelativeTo(null);
 			}
 		});
 		btnCerrar.setBounds(236, 217, 89, 23);
@@ -173,6 +175,7 @@ public class VLogin extends JDialog {
 				dispose();
 				VBienvenida bien = new VBienvenida();
 				bien.setVisible(true);
+				bien.setLocationRelativeTo(null);
 			}
 		});
 		btnCerrar.setBounds(236, 217, 89, 23);
@@ -245,6 +248,7 @@ public class VLogin extends JDialog {
 				dispose();
 				VBienvenida bien = new VBienvenida();
 				bien.setVisible(true);
+				bien.setLocationRelativeTo(null);
 			}
 		});
 		btnCerrar.setBounds(236, 217, 89, 23);
@@ -317,6 +321,7 @@ public class VLogin extends JDialog {
 				dispose();
 				VBienvenida bien = new VBienvenida();
 				bien.setVisible(true);
+				bien.setLocationRelativeTo(null);
 			}
 		});
 		btnCerrar.setBounds(236, 217, 89, 23);
@@ -327,37 +332,35 @@ public class VLogin extends JDialog {
 		try {
 		
 			boolean login = datos.login(textFieldId.getText(), new String(passwordField.getPassword()));
-			
-
-			
+				
 			if (login) {
 				
 				VCliente vent = new VCliente(this, textFieldId.getText(), datos);
 				vent.setVisible(true);
-				
+				vent.setLocationRelativeTo(null);
+				this.setVisible(false);
 			} else {
 				JOptionPane.showMessageDialog(passwordField, "Se han introducido credenciales erroneas",
 						"Error login", JOptionPane.ERROR_MESSAGE);
 				textFieldId.setText("");
 				passwordField.setText("");
 				textFieldId.requestFocus();
-
 			}
-			
-			//ReadException Q lo cambie yo 
-		} catch (Exception ex) {
-			
+		} catch (ReadException ex) {
 			JOptionPane.showMessageDialog(this,
 					"Error al intentar comprobar credenciales en la base de datos", "Error lectura BBDD",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
 	public void loginCom(ControladorCom datos) {
 		try {
 			boolean login = datos.login(textFieldId.getText(), new String(passwordField.getPassword()));
 			if (login) {
 				VComercio vent = new VComercio(this, true, textFieldId.getText(), datos);
 				vent.setVisible(true);
+				vent.setLocationRelativeTo(null);
+				this.setVisible(false);			
 			} else {
 				JOptionPane.showMessageDialog(passwordField, "Se han introducido credenciales erroneas",
 						"Error login", JOptionPane.ERROR_MESSAGE);
@@ -372,12 +375,15 @@ public class VLogin extends JDialog {
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
 	public void loginSum(ControladorSum datos) {
 		try {
 			boolean login = datos.login(textFieldId.getText(), new String(passwordField.getPassword()));
 			if (login) {
 				VSuministrador vent = new VSuministrador(this, true, textFieldId.getText(), datos);
 				vent.setVisible(true);
+				vent.setLocationRelativeTo(null);
+				this.setVisible(false);
 			} else {
 				JOptionPane.showMessageDialog(passwordField, "Se han introducido credenciales erroneas",
 						"Error login", JOptionPane.ERROR_MESSAGE);
@@ -398,6 +404,8 @@ public class VLogin extends JDialog {
 			if (textFieldId.getText().equals("ADMIN") && new String(passwordField.getPassword()).equals("admin")) {
 				VAdministrador vent = new VAdministrador(this, true, textFieldId.getText(), datos);
 				vent.setVisible(true);
+				vent.setLocationRelativeTo(null);
+				this.setVisible(false);
 			} else {
 				JOptionPane.showMessageDialog(passwordField, "Se han introducido credenciales erroneas",
 						"Error login", JOptionPane.ERROR_MESSAGE);

@@ -25,6 +25,7 @@ public class VAdministrador extends JFrame {
 	private JPanel contentPane;
 	private JButton btnAcceso;
 	private JButton btnAlta;
+	private JButton btnCerrarSesion;
 	private JComboBox comboTipoUsuarioAlta;
 
 	public VAdministrador(VLogin vLogin, boolean b, String id, ControladorAdmin datos) {
@@ -60,10 +61,10 @@ public class VAdministrador extends JFrame {
 		btnAcceso.setBounds(67, 206, 89, 23);
 		contentPane.add(btnAcceso);
 
-		JButton btnCerrarSesion = new JButton("CerrarSesion");
+		btnCerrarSesion = new JButton("CerrarSesion");
 		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				cerrarSesion(datos);
 			}
 		});
 		btnCerrarSesion.setBounds(10, 11, 120, 23);
@@ -71,33 +72,53 @@ public class VAdministrador extends JFrame {
 	}
 
 	private void login(VLogin vLogin, String id) {
-		// TODO Auto-generated method stub
+		
 		if (comboTipoUsuarioAlta.getSelectedIndex() == 0) {
 			ControladorClie datosClie = Main.datosClie();
 			VCliente cliente = new VCliente(vLogin, id, datosClie);
 			cliente.setVisible(true);
+			cliente.setLocationRelativeTo(null);
 			this.dispose();
 
 		} else if (comboTipoUsuarioAlta.getSelectedIndex() == 1) {
 			ControladorCom datosCom = Main.datosCom();
 			VComercio comercio = new VComercio(vLogin, true, id, datosCom);
 			comercio.setVisible(true);
+			comercio.setLocationRelativeTo(null);
 			this.dispose();
 
 		} else if (comboTipoUsuarioAlta.getSelectedIndex() == 2) {
 			ControladorSum datosSum = Main.datosSum();
 			VSuministrador suministrador = new VSuministrador(vLogin, true, id, datosSum);
 			suministrador.setVisible(true);
+			suministrador.setLocationRelativeTo(null);
 			this.dispose();
 
 		} else {
 			JOptionPane.showMessageDialog(btnAcceso, "Error seleccion incorrecta", "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	
 
 	private void alta(ControladorAdmin datos) {
-		// TODO Auto-generated method stub
+
 		VAlta alta = new VAlta(datos);
 		alta.setVisible(true);
+		alta.setLocationRelativeTo(null);
 	}
+	
+	private void cerrarSesion(ControladorAdmin datos) {
+		try {
+			VBienvenida vent = new VBienvenida();
+			vent.setVisible(true);
+			vent.setLocationRelativeTo(null);
+			this.dispose();
+		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(btnCerrarSesion,
+					"Error al Cargar la Ventana", "Error Lectura Ventana",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 }
