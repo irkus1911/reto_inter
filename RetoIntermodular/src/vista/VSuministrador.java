@@ -77,8 +77,9 @@ public class VSuministrador extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource().equals(btnAñadirProducto)) {
-			VProducto ven=new VProducto();
+			VProducto ven=new VProducto(datos,id_sum);
 			ven.setVisible(true);
+			ven.setLocationRelativeTo(null);
 
 		}
 		if(e.getSource().equals(btnCerrarSesion)) {
@@ -96,17 +97,20 @@ public class VSuministrador extends JFrame implements ActionListener{
 		if(e.getSource().equals(btnRevisarStock)) {
 			VStock ven=new VStock(this,true,id_sum,datos);
 			ven.setVisible(true);
+			ven.setLocationRelativeTo(null);
 		
 			
 		}
 		if(e.getSource().equals(btnValidarPedidos)) {
 			VValidar ven=new VValidar(this, true, id_sum, datos);
 			ven.setVisible(true);
+			ven.setLocationRelativeTo(null);
 		
 		}
 	}
 	private void consultarPedido(String id, ControladorSum datos) throws ReadException {
 		VHistorico hist = new VHistorico(this, true, id, datos);
 		hist.setVisible(true);
+		hist.setLocationRelativeTo(null);
 	}
 }

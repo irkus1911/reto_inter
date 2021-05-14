@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import app.Main;
 import logica.*;
 import modelo.*;
 
@@ -18,19 +19,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
-public class VBienvenida extends JDialog  {
+public class VBienvenida extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JComboBox comboTipoUsuarioLogin;
 	private JButton btnIrALogin;
-	
 
 	/**
 	 * Launch the application.
 	 */
+
 //	public static void main(String[] args) {
 //		try {
 //			VBienvenida dialog = new VBienvenida();
+//			dialog.setLocationRelativeTo(null);
 //			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 //			dialog.setVisible(true);
 //		} catch (Exception e) {
@@ -38,8 +40,8 @@ public class VBienvenida extends JDialog  {
 //		}
 //	}
 
-	
-	public VBienvenida(ControladorClie datosClie, ControladorCom datosCom, ControladorSum datosSum, ControladorAdmin datosAdmin) {
+	public VBienvenida() {
+
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -49,7 +51,7 @@ public class VBienvenida extends JDialog  {
 		btnIrALogin = new JButton("Continuar");
 		btnIrALogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			login(datosClie,datosCom,datosSum,datosAdmin);
+				login();
 			}
 		});
 		btnIrALogin.setBounds(297, 194, 89, 23);
@@ -65,43 +67,42 @@ public class VBienvenida extends JDialog  {
 		comboTipoUsuarioLogin.setSelectedIndex(-1);
 		comboTipoUsuarioLogin.setBounds(126, 123, 182, 22);
 		contentPanel.add(comboTipoUsuarioLogin);
-		
 
-		
 	}
 
-	
-	public void login(ControladorClie datosClie, ControladorCom datosCom, ControladorSum datosSum, ControladorAdmin datosAdmin ) {
-		// TODO Auto-generated method stub
-		if (comboTipoUsuarioLogin.getSelectedIndex() == 0) {
-				
-				/*VLogin login=new VLogin(datosAdmin);
-				login.setVisible(true);
-				this.dispose();*/
+	public void login() {
 
-			
+		if (comboTipoUsuarioLogin.getSelectedIndex() == 0) {
+			ControladorAdmin datosAdmin = Main.datosAdmin();
+			VLogin login = new VLogin(datosAdmin);
+			login.setVisible(true);
+			login.setLocationRelativeTo(null);
+			this.dispose();
+
 		} else if (comboTipoUsuarioLogin.getSelectedIndex() == 1) {
-			
-				VLogin login=new VLogin(datosClie);
-				login.setVisible(true);
-				this.dispose();
-			
+			ControladorClie datosClie = Main.datosClie();
+			VLogin login = new VLogin(datosClie);
+			login.setVisible(true);
+			login.setLocationRelativeTo(null);
+			this.dispose();
+
 		} else if (comboTipoUsuarioLogin.getSelectedIndex() == 2) {
-			
-				VLogin login=new VLogin(datosCom);
-				login.setVisible(true);
-				this.dispose();
-			
+			ControladorCom datosCom = Main.datosCom();
+			VLogin login = new VLogin(datosCom);
+			login.setVisible(true);
+			login.setLocationRelativeTo(null);
+			this.dispose();
+
 		} else if (comboTipoUsuarioLogin.getSelectedIndex() == 3) {
-			
-				VLogin login=new VLogin(datosSum);
-				login.setVisible(true);
-				this.dispose();
-			
+			ControladorSum datosSum = Main.datosSum();
+			VLogin login = new VLogin(datosSum);
+			login.setVisible(true);
+			login.setLocationRelativeTo(null);
+			this.dispose();
+
 		} else {
 			JOptionPane.showMessageDialog(btnIrALogin, "Error seleccion incorrecta", "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
 }

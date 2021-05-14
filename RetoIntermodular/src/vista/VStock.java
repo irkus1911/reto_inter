@@ -24,11 +24,7 @@ public class VStock extends JDialog {
 	private JTable tableStock;
 
 	
-	//STOCK SUMINISTRADOR
-	/**
-	 * @wbp.parser.constructor
-	 */
-	
+	// STOCK SUMINISTRADOR
 	public VStock(VSuministrador vSuministrador, boolean b, String id_sum, ControladorSum datos) {
 
 		setBounds(100, 100, 450, 300);
@@ -40,15 +36,12 @@ public class VStock extends JDialog {
 			btnNewButton.setBounds(10, 227, 89, 23);
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					
 					dispose();
 				}
 			});
 			contentPanel.setLayout(null);
 			contentPanel.add(btnNewButton);
-
-			JLabel lblNombreStock = new JLabel("Stock de ....");
-			lblNombreStock.setBounds(69, 11, 337, 23);
-			contentPanel.add(lblNombreStock);
 
 			Collection<Stock> stock = new HashSet<Stock>();
 			try {
@@ -56,23 +49,26 @@ public class VStock extends JDialog {
 			} catch (ReadException e1) {
 				JOptionPane.showMessageDialog(this, "Error al intentar listar datos de la base de datos",
 						"Error lectura BBDD", JOptionPane.ERROR_MESSAGE);
-				
+
 			}
 			String[] columnas = { "Suministrador", "Producto", "Cantidad" };
 			tableStock = new JTable(cargarStockSum(datos, stock), columnas);
-			tableStock.setBounds(24, 194, 414, 168);
+			tableStock.setBounds(36, 65, 347, 132);
 
 			contentPanel.add(tableStock);
 		}
 	}
-	
-	
-	//STOCK COMERCIO
-	
+
+	// STOCK COMERCIO
+
 	public VStock(VComercio vComercio, boolean b, String id_com, ControladorCom datos) {
 
-		//POR ACABAR
-		
+		/*
+		if(hasFocus()) {
+			System.out.println("si_STOCk");
+		//	this.enable();
+		}
+		*/
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -82,36 +78,41 @@ public class VStock extends JDialog {
 			btnNewButton.setBounds(10, 227, 89, 23);
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					/*
+					vComercio.setFocusable(true);
+					vComercio.setFocusableWindowState(true);
+					vComercio.transferFocus();
+					if(!hasFocus()) {
+						System.out.println("no_Stock");
+					//	this.disable();
+					//	this.disableEvents(EXIT_ON_CLOSE);
+					}
+					*/
+					
 					dispose();
 				}
 			});
 			contentPanel.setLayout(null);
 			contentPanel.add(btnNewButton);
 
-			JLabel lblNombreStock = new JLabel("Stock de ....");
-			lblNombreStock.setBounds(69, 11, 337, 23);
-			contentPanel.add(lblNombreStock);
-
 			Collection<Stock> stock = new HashSet<Stock>();
 			try {
 				stock = datos.stockCom(id_com);
-				
-				//Modificada excepcion (ReadException)
+
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(this, "Error al intentar listar datos de la base de datos",
 						"Error lectura BBDD", JOptionPane.ERROR_MESSAGE);
-				
 			}
 			String[] columnas = { "Suministrador", "Producto", "Cantidad" };
 			tableStock = new JTable(cargarStockCom(datos, stock), columnas);
-			tableStock.setBounds(24, 194, 414, 168);
+			tableStock.setBounds(36, 65, 347, 132);
 
 			contentPanel.add(tableStock);
 		}
 	}
-	
 
 	protected String[][] cargarStockSum(ControladorSum datos, Collection<Stock> stock) {
+		
 		int cont = 1;
 		String[][] tablaStock = new String[stock.size() + 1][4];
 		tablaStock[0][0] = "ID PRODUCTO";
@@ -127,9 +128,9 @@ public class VStock extends JDialog {
 		}
 		return tablaStock;
 	}
-	
-	
+
 	protected String[][] cargarStockCom(ControladorCom datos, Collection<Stock> stock) {
+		
 		int cont = 1;
 		String[][] tablaStock = new String[stock.size() + 1][4];
 		tablaStock[0][0] = "ID PRODUCTO";
@@ -145,11 +146,5 @@ public class VStock extends JDialog {
 		}
 		return tablaStock;
 	}
-	
-	
-	
-	
-	
-	
-	
+
 }
