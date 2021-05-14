@@ -32,12 +32,11 @@ public class VPedido extends JDialog {
 	private JSpinner spinnerCant;
 	private JButton btnEnviar, btnAtras;
 
-	
-
 	// VPedido para Clientes
 	/**
 	 * @wbp.parser.constructor
 	 */
+	
 	public VPedido(VCliente clie, boolean b, String id, ControladorClie datos) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
@@ -168,11 +167,10 @@ public class VPedido extends JDialog {
 	
 	// Metodos del Cliente
 	private int leerCantidad(String id_prod, String id_com, ControladorClie datos) {
-		// TODO Auto-generated method stub
+	
 		try {
 			return datos.listarCant(id_com, id_prod);
 		} catch (ReadException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
 		}
@@ -187,13 +185,11 @@ public class VPedido extends JDialog {
 			}
 			comboVendedor.setSelectedIndex(-1);
 		} catch (ReadException e) {
-			
 			e.printStackTrace();
 		}
 	}
 
 	private void cargarProductos(String id, ControladorClie datos) {
-		// TODO Auto-generated method stub
 
 		try {
 			Collection<Producto> productos = datos.listarProd();
@@ -202,20 +198,18 @@ public class VPedido extends JDialog {
 			}
 			comboProducto.setSelectedIndex(-1);
 		} catch (ReadException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	private void realizarPedido(String id_clie, ControladorClie datos) {
-		// TODO Auto-generated method stub
+	
 		try {
 			datos.crearPedidoClieCom(id_clie, id_com, id_prod, ((Integer) spinnerCant.getValue()));
 			JOptionPane.showMessageDialog(btnEnviar, "Se ha realizado el pedido exitosamente", "Pedido realizado",
 					JOptionPane.INFORMATION_MESSAGE);
 			this.dispose();
 		} catch (CreateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -223,18 +217,17 @@ public class VPedido extends JDialog {
 	
 	// Metodos del Comercio
 	private int leerCantidad(String id_prod, String id_sum, ControladorCom datos) {
-		// TODO Auto-generated method stub
+		
 		try {
 			return datos.listarCant(id_sum, id_prod);
 		} catch (ReadException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
 		}
 	}
 
 	private void cargarVendedor(String id_prod, ControladorCom datos) {
-		// TODO Auto-generated method stub
+	
 		try {
 			Collection<Suministrador> suministradores = datos.listarVendedor(id_prod);
 			for (Suministrador sum : suministradores) {
@@ -242,13 +235,11 @@ public class VPedido extends JDialog {
 			}
 			comboVendedor.setSelectedIndex(-1);
 		} catch (ReadException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	private void cargarProductos(String id, ControladorCom datos) {
-		// TODO Auto-generated method stub
 
 		try {
 			Collection<Producto> productos = datos.listarProd();
@@ -257,20 +248,19 @@ public class VPedido extends JDialog {
 			}
 			comboProducto.setSelectedIndex(-1);
 		} catch (ReadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Error al intentar listar datos de la base de datos",
+					"Error lectura BBDD", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void realizarPedido(String id_com, ControladorCom datos) {
-		// TODO Auto-generated method stub
+		
 		try {
 			datos.crearPedidoComSum(id_com, id_sum, id_prod, ((Integer) spinnerCant.getValue()));
 			JOptionPane.showMessageDialog(btnEnviar, "Se ha realizado el pedido exitosamente", "Pedido realizado",
 					JOptionPane.INFORMATION_MESSAGE);
 			this.dispose();
 		} catch (CreateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

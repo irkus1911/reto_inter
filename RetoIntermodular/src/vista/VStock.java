@@ -25,6 +25,8 @@ public class VStock extends JDialog {
 
 	
 	//STOCK SUMINISTRADOR
+	
+	
 	public VStock(VSuministrador vSuministrador, boolean b, String id_sum, ControladorSum datos) {
 
 		setBounds(100, 100, 450, 300);
@@ -36,6 +38,7 @@ public class VStock extends JDialog {
 			btnNewButton.setBounds(10, 227, 89, 23);
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					dispose();
 				}
 			});
 			contentPanel.setLayout(null);
@@ -55,7 +58,7 @@ public class VStock extends JDialog {
 			}
 			String[] columnas = { "Suministrador", "Producto", "Cantidad" };
 			tableStock = new JTable(cargarStockSum(datos, stock), columnas);
-			tableStock.setBounds(24, 194, 414, 168);
+			tableStock.setBounds(36, 65, 347, 132);
 
 			contentPanel.add(tableStock);
 		}
@@ -77,6 +80,7 @@ public class VStock extends JDialog {
 			btnNewButton.setBounds(10, 227, 89, 23);
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					dispose();
 				}
 			});
 			contentPanel.setLayout(null);
@@ -90,7 +94,7 @@ public class VStock extends JDialog {
 			try {
 				stock = datos.stockCom(id_com);
 				
-				//Modificada excepcion (ReadException)
+				
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(this, "Error al intentar listar datos de la base de datos",
 						"Error lectura BBDD", JOptionPane.ERROR_MESSAGE);
@@ -98,7 +102,7 @@ public class VStock extends JDialog {
 			}
 			String[] columnas = { "Suministrador", "Producto", "Cantidad" };
 			tableStock = new JTable(cargarStockCom(datos, stock), columnas);
-			tableStock.setBounds(24, 194, 414, 168);
+			tableStock.setBounds(36, 65, 347, 132);
 
 			contentPanel.add(tableStock);
 		}

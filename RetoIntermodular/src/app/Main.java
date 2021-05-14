@@ -1,23 +1,43 @@
 package app;
 
-import java.sql.*;
-
-import implementaciones.*;
-import logica.*;
-import modelo.*;
-import vista.*;
+import implementaciones.ControladorAdminImplementacion;
+import implementaciones.ControladorClieImplementacion;
+import implementaciones.ControladorComImplementacion;
+import implementaciones.ControladorSumImplementacion;
+import logica.ControladorAdmin;
+import logica.ControladorClie;
+import logica.ControladorCom;
+import logica.ControladorSum;
+import vista.VBienvenida;
 
 
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		ControladorClie datosClie = new ControladorClieImplementacion();
-		ControladorCom datosCom = new ControladorComImplementacion();
-		ControladorSum datosSum = new ControladorSumImplementacion();
-		ControladorAdmin datosAdmin = new ControladorAdminImplementacion();
-		VBienvenida vent = new VBienvenida(datosClie,datosCom,datosSum,datosAdmin);
+		
+		
+	
+		
+		
+		VBienvenida vent = new VBienvenida();
 		vent.setVisible(true);
+	}
+	
+	public static ControladorClie datosClie() {
+		ControladorClie datosClie = new ControladorClieImplementacion();
+		return datosClie;
+	}
+	public static ControladorCom datosCom() {
+		ControladorCom datosCom = new ControladorComImplementacion();
+		return datosCom;
+	}
+	public static ControladorSum datosSum() {
+		ControladorSum datosSum = new ControladorSumImplementacion();
+		return datosSum;
+	}
+	public static ControladorAdmin datosAdmin() {
+		ControladorAdmin datosAdmin = new ControladorAdminImplementacion();
+		return datosAdmin;
 	}
 
 }

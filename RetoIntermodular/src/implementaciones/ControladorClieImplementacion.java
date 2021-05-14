@@ -6,7 +6,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.ResourceBundle;
@@ -71,7 +73,8 @@ public class ControladorClieImplementacion implements ControladorClie {
 			stmt.setString(2, id_com);
 			stmt.setString(3, id_prod);
 			stmt.setInt(4, cant);
-			stmt.setDate(5, Date.valueOf(LocalDate.now()));
+			System.out.println(LocalDateTime.now());
+			stmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
 
 			stmt.executeUpdate();
 
@@ -110,7 +113,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 				hist.setIdProd(rs.getString("producto.id_prod"));
 				hist.setProducto(rs.getString("producto.nombre"));
 				hist.setCant(rs.getInt("historico_c.cant"));
-				hist.setFecha(rs.getDate("historico_c.fecha").toLocalDate());
+				hist.setFecha(rs.getTimestamp("historico_c.fecha").toLocalDateTime());
 				historico.add(hist);
 			}
 

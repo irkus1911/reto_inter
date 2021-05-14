@@ -1,19 +1,10 @@
 package logica;
 
 public interface ControladorAdmin {
-	public void alta();
-	public void login();
-	public void crearPedidoClieCom();
 	
-	public void stockCom();
-	public void historicoClieCom();
-	public void validarPedidoCom();
-	public void crearPedidoComSum();
+	public void alta(String nombre, String clave, String id, String tipoUsuario, String tipoComercio) throws CreateException;
+	public boolean login(String id, String clave) throws ReadException;
 	
-	public void historicoComSum();
-	
-	public void stockSum();
-	public void validarPedidoSum();
 	
 	
 	

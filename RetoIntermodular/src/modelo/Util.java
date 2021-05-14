@@ -6,8 +6,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -170,6 +172,32 @@ public class Util {
 				} while (!hay);
 				return fecha;
 			}
+			public static LocalDate stringToFechaSQL(String fecha) {
+				LocalDate date = null;
+				System.out.println(fecha);
+				DateTimeFormatter formateador= DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				try {
+					date = LocalDate.parse(fecha, formateador);
+					System.out.println(date);
+				} catch (DateTimeParseException p) {
+					System.out.println("Error... formato de fecha introducido incorrecto.");
+					
+				}
+				return date;
+			}
+			public static LocalDateTime stringToLocalDateTimeSQL(String fecha) {
+				LocalDateTime date = null;
+				System.out.println(fecha);
+				DateTimeFormatter formateador= DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				try {
+					date = LocalDateTime.parse(fecha, formateador);
+					System.out.println(date);
+				} catch (DateTimeParseException p) {
+					System.out.println("Error... formato de fecha introducido incorrecto.");
+					
+				}
+				return date;
+			}
 			public static char leerCharArray(char caracteres[], String message){
 				int i;
 				boolean error=false;
@@ -198,6 +226,8 @@ public class Util {
 				}while(error);
 				return aux;
 			}
+			
+			
 			
 			//Devuelve el número de objetos de un fichero
 			public static int calculoFichero(File fich){

@@ -8,31 +8,23 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
 import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
+import modelo.*;
+import logica.*;
 public class VProducto extends JDialog {
 	private JTextField texIdProducto;
 	private JTextField textNomProducto;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			VProducto dialog = new VProducto();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
-	 */
-	public VProducto() {
+	private JButton btnAñadir;
+	private JButton btnAtras;
+	private JSpinner spinner;
+	
+	public VProducto(ControladorSum datos,String id) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 		
@@ -58,16 +50,39 @@ public class VProducto extends JDialog {
 		getContentPane().add(textNomProducto);
 		textNomProducto.setColumns(10);
 		
-		JSpinner spinner = new JSpinner();
+		spinner = new JSpinner();
 		spinner.setBounds(179, 125, 71, 25);
 		getContentPane().add(spinner);
 		
-		JButton btnAtras = new JButton("Atras");
+		btnAtras = new JButton("Atras");
+		btnAtras.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			dispose();
+			}
+		});
 		btnAtras.setBounds(33, 212, 89, 23);
 		getContentPane().add(btnAtras);
 		
-		JButton btnAñadir = new JButton("A\u00F1adir");
+		btnAñadir = new JButton("A\u00F1adir");
+		btnAñadir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			addProducto(datos,id);
+			}
+		});
 		btnAñadir.setBounds(306, 212, 89, 23);
 		getContentPane().add(btnAñadir);
+	}
+
+	protected void addProducto(ControladorSum datos, String id) {
+		try {
+			datos.anadirProd(id, texIdProducto.getText(), ((Integer)spinner.getValue()), textNomProducto.getText());
+			JOptionPane.showMessageDialog(this, "Producto añadido correctamente","Producto añadido",JOptionPane.INFORMATION_MESSAGE);
+			dispose();
+		} catch (CreateException e) {
+			JOptionPane.showMessageDialog(this, "Error al intentar añadir datos de la base de datos",
+					"Error create BBDD", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		
 	}
 }
