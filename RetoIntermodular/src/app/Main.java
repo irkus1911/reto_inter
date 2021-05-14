@@ -14,6 +14,7 @@ public class Main {
 		
 		VBienvenida vent = new VBienvenida();
 		vent.setVisible(true);
+		vent.setLocationRelativeTo(null);
 	}
 	
 	public static ControladorClie datosClie() {
