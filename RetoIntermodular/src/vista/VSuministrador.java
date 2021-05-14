@@ -31,6 +31,7 @@ public class VSuministrador extends JFrame implements ActionListener{
 	private ControladorSum datos;
 	
 	public VSuministrador(VLogin vLogin, boolean b, String id_sum,ControladorSum datos) {
+	
 		this.datos=datos;
 		this.id_sum=id_sum;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,9 +75,9 @@ public class VSuministrador extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		
 		if(e.getSource().equals(btnAñadirProducto)) {
-			VProducto ven=new VProducto();
+			VProducto ven=new VProducto(datos,id_sum);
 			ven.setVisible(true);
 
 		}

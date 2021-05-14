@@ -11,13 +11,26 @@ import vista.*;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		ControladorClie datosClie = new ControladorClieImplementacion();
-		ControladorCom datosCom = new ControladorComImplementacion();
-		ControladorSum datosSum = new ControladorSumImplementacion();
-		ControladorAdmin datosAdmin = new ControladorAdminImplementacion();
-		VBienvenida vent = new VBienvenida(datosClie,datosCom,datosSum,datosAdmin);
+		
+		VBienvenida vent = new VBienvenida();
 		vent.setVisible(true);
+	}
+	
+	public static ControladorClie datosClie() {
+		ControladorClie datosClie = new ControladorClieImplementacion();
+		return datosClie;
+	}
+	public static ControladorCom datosCom() {
+		ControladorCom datosCom = new ControladorComImplementacion();
+		return datosCom;
+	}
+	public static ControladorSum datosSum() {
+		ControladorSum datosSum = new ControladorSumImplementacion();
+		return datosSum;
+	}
+	public static ControladorAdmin datosAdmin() {
+		ControladorAdmin datosAdmin = new ControladorAdminImplementacion();
+		return datosAdmin;
 	}
 
 }

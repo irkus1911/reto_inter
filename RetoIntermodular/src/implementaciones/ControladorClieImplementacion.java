@@ -6,7 +6,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.ResourceBundle;
@@ -22,16 +24,16 @@ public class ControladorClieImplementacion implements ControladorClie {
 	// private InputStream inputStream;
 	private ResourceBundle configFile;
 	private String user, url, pass;
-
+	private String admin;
 	// Sentencias
 
 	// modificado select de cliente
 	private final String comprobarLogin = "SELECT clave FROM cliente WHERE id_clie = ? and clave = ?";
-	private final String mostrarPedidos = "SELECT  comercio.nombre_com, comercio.id_com, producto.id_prod, producto.nombre, historico_c.cant, historico_c.fecha FROM comercio, producto, historico_c WHERE comercio.id_com = historico_c.id_com AND producto.id_prod = historico_c.id_prod AND historico_c.id_clie = ?";
+	private String mostrarPedidos = "SELECT  comercio.nombre_com, comercio.id_com, producto.id_prod, producto.nombre, historico_c.cant, historico_c.fecha FROM comercio, producto, historico_c WHERE comercio.id_com = historico_c.id_com AND producto.id_prod = historico_c.id_prod AND historico_c.id_clie = ? ";
 	private final String hacerPedido = "CALL `add_pedido_com`(?,?,?,?,?)";
 	private final String listarProductos = "SELECT * FROM producto";
-	private final String listarVendedores = "SELECT comercio.id_com,comercio.nombre_com, comercio.tipo_com FROM  comercio,stock_com WHERE stock_com.id_com = comercio.id_com AND stock_com.id_prod = ?";
-	private final String leerCant = "SELECT stock_com.cant FROM stock_com WHERE stock_com.id_com = ? AND stock_com.id_prod = ?";
+	private String listarVendedores = "SELECT comercio.id_com,comercio.nombre_com, comercio.tipo_com FROM  comercio, stock_com WHERE stock_com.id_com = comercio.id_com AND stock_com.id_prod = ? ";
+	private final String leerCant = "SELECT stock_com.cant FROM stock_com WHERE stock_com.id_com = ? AND stock_com.id_prod = ? ";
 
 	public ControladorClieImplementacion() {
 		this.configFile = ResourceBundle.getBundle("modelo.config");
@@ -64,6 +66,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 
 	@Override
 	public void crearPedidoClieCom(String id_clie, String id_com, String id_prod, int cant) throws CreateException {
+		
 		this.openConnection();
 		try {
 			stmt = con.prepareStatement(hacerPedido);
@@ -71,7 +74,8 @@ public class ControladorClieImplementacion implements ControladorClie {
 			stmt.setString(2, id_com);
 			stmt.setString(3, id_prod);
 			stmt.setInt(4, cant);
-			stmt.setDate(5, Date.valueOf(LocalDate.now()));
+			System.out.println(LocalDateTime.now());
+			stmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
 
 			stmt.executeUpdate();
 
@@ -93,7 +97,13 @@ public class ControladorClieImplementacion implements ControladorClie {
 		Historico hist;
 		Collection<Historico> historico = new HashSet<Historico>();
 		ResultSet rs = null;
-
+		if(id.equals("ADMIN")) {
+			admin = " AND comercio.id_com = 'ADMIN'";
+			
+		} else {
+			admin =  " AND comercio.id_com != 'ADMIN'";
+		}
+		mostrarPedidos+=admin;
 		this.openConnection();
 		try {
 			stmt = con.prepareStatement(mostrarPedidos);
@@ -110,7 +120,7 @@ public class ControladorClieImplementacion implements ControladorClie {
 				hist.setIdProd(rs.getString("producto.id_prod"));
 				hist.setProducto(rs.getString("producto.nombre"));
 				hist.setCant(rs.getInt("historico_c.cant"));
-				hist.setFecha(rs.getDate("historico_c.fecha").toLocalDate());
+				hist.setFecha(rs.getTimestamp("historico_c.fecha").toLocalDateTime());
 				historico.add(hist);
 			}
 
@@ -220,8 +230,14 @@ public class ControladorClieImplementacion implements ControladorClie {
 	}
 
 	@Override
-	public Collection<Comercio> listarVendedor(String id_prod) throws ReadException {
-		// TODO Auto-generated method stub
+	public Collection<Comercio> listarVendedor(String id_prod, String id_clie) throws ReadException {
+		if(id_clie.equals("ADMIN")) {
+			admin = " AND comercio.id_com = 'ADMIN'";
+			
+		} else {
+			admin =  " AND comercio.id_com != 'ADMIN'";
+		}
+		listarVendedores+=admin;
 		Comercio com;
 		Collection<Comercio> comercios = new HashSet<>();
 		ResultSet rs = null;
